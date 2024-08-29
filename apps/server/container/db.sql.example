@@ -1,0 +1,19 @@
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT FROM pg_database WHERE datname = '<your dbname>'
+    ) THEN
+        EXECUTE 'CREATE DATABASE <your dbname>';
+    END IF;
+END $$;
+
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT FROM pg_roles WHERE rolname = '<your user>'
+    ) THEN
+        EXECUTE 'CREATE USER laserants WITH PASSWORD ''<your password>''';
+    END IF;
+END $$;    
+
+GRANT ALL PRIVILEGES ON DATABASE <your dbname> TO <your user>;
