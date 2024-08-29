@@ -1,6 +1,7 @@
 # Local environment files
 .env
 *.local
+*.sql
 
 # Logs
 logs
