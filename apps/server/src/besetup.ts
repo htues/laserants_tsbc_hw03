@@ -19,7 +19,7 @@ async function StartBackend() {
     backend.use(express.urlencoded({ extended: true }))
     backend.use(cookieParser())
 
-    //method for request monitoring and logging
+    // Method for request monitoring and logging
     backend.use((req: Request, res: Response, next: NextFunction) => {
       console.log(`Request received: [${req.method}] ${req.path}`)
       console.log(`Request headers: ${JSON.stringify(req.headers)}`)
@@ -29,7 +29,7 @@ async function StartBackend() {
     backend.use('/health', healthCheckRouter)
     backend.use('/roles', rolesRouter)
 
-    //error handling middleware
+    // Error handling middleware
     backend.use(
       (err: Error, req: Request, res: Response, next: NextFunction) => {
         console.error('Unexpected error:', err.message)
