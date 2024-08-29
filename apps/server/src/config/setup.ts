@@ -1,7 +1,5 @@
-import {PrismaClient} from '@prisma/client';
+import prisma from "../api/prismaClient";
 import { whitelist_frontend, mode } from "./envvars";
-
-const prisma = new PrismaClient();
 
 const dbConnection = async () => {
   try {
