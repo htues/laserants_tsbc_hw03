@@ -4,6 +4,8 @@ import cookieParser from 'cookie-parser'
 import { dbConnection, setCorsEnviro } from './config/setup'
 import { port, mode } from './config/envvars'
 
+import healthCheckRouter from './api/routes/hc'
+
 const backend: express.Application = express()
 
 const PORT = port || 5001
@@ -22,6 +24,8 @@ async function StartBackend() {
       console.log(`Request headers: ${JSON.stringify(req.headers)}`)
       next()
     })
+
+    backend.use('/health', healthCheckRouter)
 
     //error handling middleware
     backend.use(
