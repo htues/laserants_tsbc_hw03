@@ -87,6 +87,9 @@ importers:
 
   apps/server:
     dependencies:
+      '@prisma/client':
+        specifier: ^5.19.0
+        version: 5.19.0
       body-parser:
         specifier: ^1.20.2
         version: 1.20.2
@@ -1058,6 +1061,17 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@prisma/client@5.19.0:
+    resolution: {integrity: sha512-CzOpau+q1kEWQyoQMvlnXIHqPvwmWbh48xZ4n8KWbAql0p8PC0BIgSTYW5ncxXa4JSEff0tcoxSZB874wDstdg==}
+    engines: {node: '>=16.13'}
+    requiresBuild: true
+    peerDependencies:
+      prisma: '*'
+    peerDependenciesMeta:
+      prisma:
+        optional: true
+    dev: false
 
   /@rollup/rollup-android-arm-eabi@4.21.1:
     resolution: {integrity: sha512-2thheikVEuU7ZxFXubPDOtspKn1x0yqaYQwvALVtEcvFhMifPADBrgRPyHV0TF3b+9BgvgjgagVyvA/UqPZHmg==}
