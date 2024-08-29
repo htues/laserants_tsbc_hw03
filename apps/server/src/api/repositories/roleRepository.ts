@@ -1,6 +1,5 @@
-import { PrismaClient, Role } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from '../prismaClient';
+import { Role } from '@prisma/client';
 
 type CreateUpdateRole = Omit<Role, 'id'>;
 
