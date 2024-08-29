@@ -12,3 +12,68 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Role {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  status      Boolean
+  users       User[]   @relation("RoleToUsers")
+}
+
+model User {
+  id        Int    @id @default(autoincrement())
+  lastname  String
+  firstname String
+  email     String @unique
+  password  String
+  roleId    Int
+  status    Boolean
+  role      Role   @relation(fields: [roleId], references: [id], name: "RoleToUsers")
+
+  @@index([roleId])
+}
+
+model Line {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  status      Boolean
+  products    Product[] @relation("LineToProducts")
+}
+
+model Product {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  price       Decimal   @default(0.00)
+  status      Boolean
+  lineId      Int
+  line        Line      @relation(fields: [lineId], references: [id], name: "LineToProducts")
+  variants    Variant[] @relation("ProductToVariants")
+  collections Collection[] @relation("ProductToCollections")
+
+  @@index([lineId])
+}
+
+model Variant {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  status      Boolean
+  productId   Int
+  product     Product   @relation(fields: [productId], references: [id], name: "ProductToVariants")
+
+  @@index([productId])
+}
+
+model Collection {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  status      Boolean
+  productId   Int
+  product     Product   @relation(fields: [productId], references: [id], name: "ProductToCollections")
+
+  @@index([productId])
+}
