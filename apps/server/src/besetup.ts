@@ -5,6 +5,7 @@ import { dbConnection, setCorsEnviro } from './config/setup'
 import { port, mode } from './config/envvars'
 
 import healthCheckRouter from './api/routes/hc'
+import rolesRouter from './api/routes/roleRoutes'
 
 const backend: express.Application = express()
 
@@ -26,6 +27,7 @@ async function StartBackend() {
     })
 
     backend.use('/health', healthCheckRouter)
+    backend.use('/roles', rolesRouter)
 
     //error handling middleware
     backend.use(
