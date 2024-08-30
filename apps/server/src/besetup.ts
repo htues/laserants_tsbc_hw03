@@ -7,7 +7,7 @@ import { port, mode } from './config/envvars'
 import healthCheckRouter from './api/routes/hc'
 import rolesRouter from './api/routes/roleRoutes'
 import usersRouter from './api/routes/userRoutes'
-import linesRouter from './api/routes/lineRoutes'
+import categoriesRouter from './api/routes/categoryRoutes'
 
 const backend: express.Application = express()
 
@@ -31,7 +31,7 @@ async function StartBackend() {
     backend.use('/health', healthCheckRouter)
     backend.use('/roles', rolesRouter)
     backend.use('/users', usersRouter)
-    backend.use('/lines', linesRouter)
+    backend.use('/lines', categoriesRouter)
 
     // Error handling middleware
     backend.use(

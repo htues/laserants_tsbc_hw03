@@ -34,12 +34,12 @@ model User {
   @@index([roleId])
 }
 
-model Line {
+model Category {
   id          Int       @id @default(autoincrement())
   name        String    @unique
   description String?
   status      Boolean
-  products    Product[] @relation("LineToProducts")
+  products    Product[] @relation("CategoryToProducts")
 }
 
 model Product {
@@ -48,12 +48,12 @@ model Product {
   description String?
   price       Decimal   @default(0.00)
   status      Boolean
-  lineId      Int
-  line        Line      @relation(fields: [lineId], references: [id], name: "LineToProducts")
+  categoryId      Int
+  category        Category      @relation(fields: [categoryId], references: [id], name: "CategoryToProducts")
   variants    Variant[] @relation("ProductToVariants")
   collections Collection[] @relation("ProductToCollections")
 
-  @@index([lineId])
+  @@index([categoryId])
 }
 
 model Variant {
