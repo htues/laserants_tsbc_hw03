@@ -11,6 +11,7 @@ import usersRouter from './api/routes/userRoutes'
 import categoriesRouter from './api/routes/categoryRoutes'
 import productsRouter from './api/routes/productRoutes'
 import variantsRouter from './api/routes/variantRoutes'
+import collectionsRouter from './api/routes/collectionRoutes'
 
 const backend: express.Application = express()
 
@@ -37,6 +38,7 @@ async function StartBackend() {
     backend.use('/categories', categoriesRouter)
     backend.use('/products', productsRouter)
     backend.use('/variants', variantsRouter)
+    backend.use('/collections', collectionsRouter)
 
     // Error handling middleware
     backend.use(
