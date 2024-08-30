@@ -15,7 +15,7 @@ datasource db {
 
 model Role {
   id          Int      @id @default(autoincrement())
-  name        String
+  name        String  @unique
   description String?
   status      Boolean
   users       User[]   @relation("RoleToUsers")
@@ -36,7 +36,7 @@ model User {
 
 model Line {
   id          Int       @id @default(autoincrement())
-  name        String
+  name        String    @unique
   description String?
   status      Boolean
   products    Product[] @relation("LineToProducts")
@@ -44,7 +44,7 @@ model Line {
 
 model Product {
   id          Int       @id @default(autoincrement())
-  name        String
+  name        String    @unique
   description String?
   price       Decimal   @default(0.00)
   status      Boolean
@@ -58,7 +58,7 @@ model Product {
 
 model Variant {
   id          Int       @id @default(autoincrement())
-  name        String
+  name        String    @unique
   description String?
   status      Boolean
   productId   Int
@@ -69,7 +69,7 @@ model Variant {
 
 model Collection {
   id          Int       @id @default(autoincrement())
-  name        String
+  name        String    @unique
   description String?
   status      Boolean
   productId   Int
