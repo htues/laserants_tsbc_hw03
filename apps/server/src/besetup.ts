@@ -8,6 +8,7 @@ import healthCheckRouter from './api/routes/hc'
 import rolesRouter from './api/routes/roleRoutes'
 import usersRouter from './api/routes/userRoutes'
 import categoriesRouter from './api/routes/categoryRoutes'
+import productsRouter from './api/routes/productRoutes'
 
 const backend: express.Application = express()
 
@@ -31,7 +32,8 @@ async function StartBackend() {
     backend.use('/health', healthCheckRouter)
     backend.use('/roles', rolesRouter)
     backend.use('/users', usersRouter)
-    backend.use('/lines', categoriesRouter)
+    backend.use('/categories', categoriesRouter)
+    backend.use('/products', productsRouter)
 
     // Error handling middleware
     backend.use(
