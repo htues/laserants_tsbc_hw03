@@ -7,6 +7,8 @@ const users = [
         email: "jdoe@astros.com",
         password: "password",
         confirmPassword: "password",
+        roleId: 1,
+        status: true,
     },
     {
         lastname: "Doe",
@@ -14,6 +16,8 @@ const users = [
         email: "jane@astros.com",
         password: "password",
         confirmPassword: "password",
+        roleId: 2,
+        status: true,
     },
     {
         lastname: "Doe",
@@ -21,5 +25,24 @@ const users = [
         email: "jack@astros.com",
         password: "password",
         confirmPassword: "password",
+        roleId: 3,
+        status: true,
     }
 ];
+
+async function seedUsers() {
+    try{
+        for (const user of users) {
+            await prisma.user.upsert({
+                where: { email: user.email },
+                update: {},
+                create: user,
+            });
+        }
+        console.log("Users seeded successfully");
+    } catch (error: unknown) {
+        console.error("Failed to seed users", error);
+    } finally {
+        await prisma.$disconnect();
+    }
+}
