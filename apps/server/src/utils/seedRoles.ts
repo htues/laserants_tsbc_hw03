@@ -34,3 +34,5 @@ async function seedRoles() {
         await prisma.$disconnect();
     }
 }
+
+export default seedRoles;

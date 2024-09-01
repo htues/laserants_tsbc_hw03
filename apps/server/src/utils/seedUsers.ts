@@ -46,3 +46,5 @@ async function seedUsers() {
         await prisma.$disconnect();
     }
 }
+
+export default seedUsers;
