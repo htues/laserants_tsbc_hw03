@@ -12,6 +12,7 @@ import categoriesRouter from './api/routes/categoryRoutes'
 import productsRouter from './api/routes/productRoutes'
 import variantsRouter from './api/routes/variantRoutes'
 import collectionsRouter from './api/routes/collectionRoutes'
+import seedDatabase from './utils/seedDatabase'
 
 const backend: express.Application = express()
 
@@ -31,6 +32,8 @@ async function StartBackend() {
       console.log(`Request headers: ${JSON.stringify(req.headers)}`)
       next()
     })
+
+    await seedDatabase()
 
     backend.use('/health', healthCheckRouter)
     backend.use('/roles', rolesRouter)
