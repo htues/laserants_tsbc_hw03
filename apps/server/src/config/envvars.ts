@@ -13,7 +13,7 @@ const whitelist_frontend = (process.env.FRONTEND_ORIGINS ?? '').split(",");
 const cors_secure = mode === 'production';
 const cors_samesite = mode === 'production' ? 'none' : 'lax';
 
-const dataseeddev = process.env.SEED_DEVELOPER;
+const dataseeddev = process.env.SEED_DEVELOPMENT;
 const dataseedprod = process.env.SEED_PRODUCTION;
 
 export {
