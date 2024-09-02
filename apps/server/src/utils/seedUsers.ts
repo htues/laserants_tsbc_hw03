@@ -6,7 +6,6 @@ const users = [
         firstname: "John",
         email: "jdoe@astros.com",
         password: "password",
-        confirmPassword: "password",
         roleId: 1,
         status: true,
     },
@@ -15,7 +14,6 @@ const users = [
         firstname: "Jane",
         email: "jane@astros.com",
         password: "password",
-        confirmPassword: "password",
         roleId: 2,
         status: true,
     },
@@ -24,7 +22,6 @@ const users = [
         firstname: "Jack",
         email: "jack@astros.com",
         password: "password",
-        confirmPassword: "password",
         roleId: 3,
         status: true,
     }
