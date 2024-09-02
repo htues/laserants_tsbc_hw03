@@ -16,7 +16,6 @@ async function seedDatabase() {
     } catch (error: unknown) {
         console.error("Error seeding database", error);
     }
-    process.exit(1);
 }
 
 export default seedDatabase;
