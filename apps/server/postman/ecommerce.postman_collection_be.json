@@ -1,0 +1,861 @@
+{
+	"info": {
+		"_postman_id": "84f470c5-6ea1-4df1-8aa8-f36c0b0b805f",
+		"name": "monorepoecommerce",
+		"description": "These are the test case for each available endpoints in the monorepo called: laserants typescript bootcamp homework 03, this application is a monolith, the backend is in the path: src/server",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "11488885"
+	},
+	"item": [
+		{
+			"name": "healthcheck",
+			"item": [
+				{
+					"name": "backend",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8012/health/backend",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8012",
+							"path": [
+								"health",
+								"backend"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "db",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8012/health/db",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8012",
+							"path": [
+								"health",
+								"db"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "user accounts",
+			"item": [
+				{
+					"name": "roles",
+					"item": [
+						{
+							"name": "all roles",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8012/roles/roles",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"roles",
+										"roles"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "find role",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8012/roles/role/5",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"roles",
+										"role",
+										"5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add a role",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"CONTRACTOR\",\n    \"description\": \"SEASONAL USERS\",\n    \"status\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8012/roles/role",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"roles",
+										"role"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update a role",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"CONTRACTORS\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8012/roles/role/5",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"roles",
+										"role",
+										"5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete a role",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8012/roles/role/5",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"roles",
+										"role",
+										"5"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "users",
+					"item": [
+						{
+							"name": "all users",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8012/users/users",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"users",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "find admin",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": []
+								},
+								"url": {
+									"raw": "http://localhost:8012/users/user/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"users",
+										"user",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add a supervisor",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"lastname\": \"Altuve\",\n    \"firstname\": \"Jose\",\n    \"email\": \"altuve@astros.com\",\n    \"password\": \"astros\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8012/users/user",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"users",
+										"user"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "activate sup account",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"roleId\": 2\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8012/users/user/2/activate",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"users",
+										"user",
+										"2",
+										"activate"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deactivate a user",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"status\": false\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8012/users/user/3/status",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"users",
+										"user",
+										"3",
+										"status"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete a user",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8012/users/user/4",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"users",
+										"user",
+										"4"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "product management",
+			"item": [
+				{
+					"name": "categories",
+					"item": [
+						{
+							"name": "all categories",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8012/categories/categories",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"categories",
+										"categories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "find a category",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8012/categories/category/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"categories",
+										"category",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add a category",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"food\",\n    \"description\": \"all kind of food\",\n    \"status\": true\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8012/categories/category",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"categories",
+										"category"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update a category",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"food a beverages\",\n    \"description\": \"all kind of food and beverages\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8012/categories/category/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"categories",
+										"category",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete a category",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8012/categories/category/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"categories",
+										"category",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "products",
+					"item": [
+						{
+							"name": "list all products",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8012/products/products",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"products",
+										"products"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "find a product",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8012/products/product/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"products",
+										"product",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add a product",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"artificial juice\",\n    \"description\": \"any kind of artificial juice bottled\",\n    \"price\": 0.65,\n    \"status\": true,\n    \"categoryId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8012/products/product",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"products",
+										"product"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update a product",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"artificial sweeted juice\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8012/products/product/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"products",
+										"product",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete a product",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8012/products/product/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"products",
+										"product",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "variants",
+					"item": [
+						{
+							"name": "list all variants",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8012/variants/variants",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"variants",
+										"variants"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "find a variant",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8012/variants/variant/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"variants",
+										"variant",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add a variant",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"sugar free beverages\",\n    \"description\": \"bitter and non sugar bevegares\",\n    \"status\": true,\n    \"productId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8012/variants/variant",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"variants",
+										"variant"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update a variant",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"description\": \"sugar free beverages\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8012/variants/variant/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"variants",
+										"variant",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete a variant",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8012/variants/variant/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"variants",
+										"variant",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "collections",
+					"item": [
+						{
+							"name": "list all collections",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8012/collections/collections",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"collections",
+										"collections"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "find a collection",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8012/collections/collection/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"collections",
+										"collection",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add a collection",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"name\": \"christmas edition\",\n    \"description\": \"christmas related beverages\",\n    \"status\": true,\n    \"productId\": 1\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8012/collections/collection",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"collections",
+										"collection"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update a collection",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"description\": \"Advent of Christmas beverage\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8012/collections/collection/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"collections",
+										"collection",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete a collection",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8012/collections/collection/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8012",
+									"path": [
+										"collections",
+										"collection",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
