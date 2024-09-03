@@ -75,7 +75,7 @@ model Collection {
   status      Boolean
   variantId   Int
   variant     Variant   @relation(fields: [variantId], references: [id], name: "VariantToCollections")
-  @@index([productId])
+  @@index([variantId])
 }
 
 model Cart {
