@@ -27,13 +27,27 @@ const users = [
     }
 ];
 
+async function resetIdSequences() {
+    await prisma.$executeRaw`ALTER SEQUENCE "User_id_seq" RESTART WITH 1`;
+}
+
 async function seedUsers() {
     try{
+        await resetIdSequences();
         for (const user of users) {
             await prisma.user.upsert({
                 where: { email: user.email },
                 update: {},
-                create: user,
+                create: {
+                    lastname: user.lastname,
+                    firstname: user.firstname,
+                    email: user.email,
+                    password: user.password,
+                    roleId: user.roleId,
+                    status: user.status,
+                    carts: { create: [] },
+                    orders: { create: [] },
+                } as any,
             });
         }
         console.log("Users seeded successfully");

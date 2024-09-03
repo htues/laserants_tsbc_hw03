@@ -1,12 +1,12 @@
 import {mode, dataseeddev} from '../config/envvars';
+import clearDatabase from './clearDatabase';
 import seedRoles from './seedRoles';
 import seedUsers from './seedUsers';
 
 async function seedDatabase() {
-    const seedData = dataseeddev === 'true';
-
     try{
-        if (seedData) {
+        if (dataseeddev) {
+            await clearDatabase();
             console.log(`Seeding database in ${mode} mode`);
             await seedRoles();
             await seedUsers();

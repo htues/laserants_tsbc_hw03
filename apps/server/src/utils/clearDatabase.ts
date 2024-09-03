@@ -11,3 +11,5 @@ async function clearDatabase() {
         await prisma.$disconnect();
     }
 }
+
+export default clearDatabase;
