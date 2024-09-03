@@ -30,7 +30,8 @@ model User {
   roleId    Int
   status    Boolean
   role      Role   @relation(fields: [roleId], references: [id], name: "RoleToUsers")
-
+  carts     Cart[] @relation("UserToCarts")
+  orders    Order[]@relation("UserToOrders")
   @@index([roleId])
 }
 
@@ -48,11 +49,9 @@ model Product {
   description String?
   price       Decimal   @default(0.00)
   status      Boolean
-  categoryId      Int
-  category        Category      @relation(fields: [categoryId], references: [id], name: "CategoryToProducts")
+  categoryId  Int
+  category    Category  @relation(fields: [categoryId], references: [id], name: "CategoryToProducts")
   variants    Variant[] @relation("ProductToVariants")
-  collections Collection[] @relation("ProductToCollections")
-
   @@index([categoryId])
 }
 
@@ -62,8 +61,10 @@ model Variant {
   description String?
   status      Boolean
   productId   Int
-  product     Product   @relation(fields: [productId], references: [id], name: "ProductToVariants")
-
+  product     Product      @relation(fields: [productId], references: [id], name: "ProductToVariants")
+  collections Collection[] @relation("VariantToCollections")
+  cartItems   CartItem[]   @relation("VariantToCartItems")
+  orderItems  OrderItem[]  @relation("VariantToOrderItems")
   @@index([productId])
 }
 
@@ -72,8 +73,56 @@ model Collection {
   name        String    @unique
   description String?
   status      Boolean
-  productId   Int
-  product     Product   @relation(fields: [productId], references: [id], name: "ProductToCollections")
-
+  variantId   Int
+  variant     Variant   @relation(fields: [variantId], references: [id], name: "VariantToCollections")
   @@index([productId])
+}
+
+model Cart {
+  id        Int        @id @default(autoincrement())
+  userId    Int
+  user      User       @relation(fields: [userId], references: [id], name: "UserToCarts")
+  items     CartItem[] @relation("CartToCartItems")
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@index([userId])
+}
+
+model CartItem {
+  id        Int      @id @default(autoincrement())
+  cartId    Int
+  variantId Int
+  quantity  Int
+  cart      Cart     @relation(fields: [cartId], references: [id], name: "CartToCartItems")
+  variant   Variant  @relation(fields: [variantId], references: [id], name: "VariantToCartItems")
+
+  @@index([cartId])
+  @@index([variantId])
+}
+
+model Order {
+  id        Int        @id @default(autoincrement())
+  userId    Int
+  user      User       @relation(fields: [userId], references: [id], name: "UserToOrders")
+  items     OrderItem[]@relation("OrderToOrderItems")
+  total     Float
+  status    Boolean
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  @@index([userId])
+}
+
+model OrderItem {
+  id        Int      @id @default(autoincrement())
+  orderId   Int
+  variantId Int
+  quantity  Int
+  price     Float
+  order     Order    @relation(fields: [orderId], references: [id], name: "OrderToOrderItems")
+  variant   Variant  @relation(fields: [variantId], references: [id], name: "VariantToOrderItems")
+
+  @@index([orderId])
+  @@index([variantId])
 }
