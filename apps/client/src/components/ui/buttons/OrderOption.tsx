@@ -1,4 +1,5 @@
 import {useNavigate} from 'react-router-dom';
+import {OrderOptionTypes} from '../../../types/ui.types';
 
 function OrderOption({
     label, path
