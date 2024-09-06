@@ -13,7 +13,7 @@ function Categories() {
   return (
     <span>
       <ul className={dashboardStyles.sidebar_ul}>
-        <li className={dashboardStyles.sidebar_li}>
+        <li className={dashboardStyles.sidebar_li_active}>
           <a href="/" className={dashboardStyles.sidebar_a}>
             <FaHome className={dashboardStyles.sidebar_li_icon} />
             All Products
