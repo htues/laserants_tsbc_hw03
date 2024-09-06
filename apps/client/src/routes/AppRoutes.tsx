@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 
 import { toggleSidebar } from '../components/redux/sidebarSlice'
 import Dashboard from '../components/dashboard/Dashboard'
+import ViewProduct from '../components/dashboard/products/ViewProduct'
 
 function AppRoutes() {
   const isSideBarCollapsed = useSelector(toggleSidebar)
@@ -14,7 +15,9 @@ function AppRoutes() {
       className={`flex flex-grow ${marginLeftClass} max-w-screen-xl overflow-auto items-start justify-center`}
     >
       <Routes>
-        <Route path="/" element={<Dashboard />} />
+        <Route path="/" element={<Dashboard />}>
+          <Route index element={<ViewProduct />} />
+        </Route>
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </div>
