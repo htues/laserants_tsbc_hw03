@@ -10,22 +10,19 @@ function UserFooter() {
           href="https://www.facebook.com"
           className={dashboardStyles.footer_links}
         >
-            <FaFacebook />
-          EULA
+          <FaFacebook />
         </a>{' '}
         <a
           href="https://www.twitter.com"
           className={dashboardStyles.footer_links}
         >
-            <FaTwitter />
-          Customer Support
+          <FaTwitter />
         </a>{' '}
         <a
           href="https://www.tiktok.com"
           className={dashboardStyles.footer_links}
         >
-            <FaTiktok />
-          Service Desk
+          <FaTiktok />
         </a>{' '}
       </div>
     </footer>
