@@ -4,6 +4,12 @@ export const toastStyles = {
   };
 
   export const dashboardStyles = {
+    container_main_layout: "min-h-screen grid grid-rows-[auto,1fr,auto]",
+    container_main_header: "col-span-2 fixed left-0 right-0 z-10 top-0",
+    container_main_sidebar: "h-full fixed top-[header-height] bottom-[footer-height]",
+    container_main_content: "ml-[sidebar-width] flex items-center justify-center pt-[header-height] pb-[footer-height] min-h-screen",
+    container_main_routes: "w-full max-w-screen-lg px-4",
+    container_main_footer: "col-span-2 fixed left-0 right-0 z-10 bottom-0",
     footer_body: "flex justify-between items-center bg-black text-white",
     footer_links: "mx-3 font-semibold hover:opacity-80 duration-150 hover:text-teal-500 hover:underline",
     sidebar_ul: "mt-3 text-white font-bold",
