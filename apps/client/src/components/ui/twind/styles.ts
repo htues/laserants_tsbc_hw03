@@ -35,6 +35,10 @@ export const productStyles = {
   dboard_description: 'text-gray-700',
   dboard_footer: 'flex justify-between items-center mt-4',
   dboard_price: 'text-lg font-semibold text-green-600',
-  dboard_button:
+  dboard_cartbutton:
     'bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700 flex items-center',
+  dboard_listbutton:
+    'bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-700 flex items-center',
+  dboard_product_grid:
+    'product-list grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4',
 }
