@@ -1,4 +1,4 @@
-import { FaBars, FaSearch, FaBell, FaUserCircle } from 'react-icons/fa'
+import { FaBars, FaSearch, FaDollarSign, FaShoppingBasket } from 'react-icons/fa'
 import { useSelector } from 'react-redux'
 import { APP_NAME } from '../../utils/envvars'
 import { ActionBarTypes } from '../../../types/ui.types'
@@ -10,7 +10,7 @@ function ActionBar({
   setSidebarToggle,
 }: Readonly<ActionBarTypes>) {
   return (
-    <nav className="{dashboardStyles.header_actionbar_nav}">
+    <nav className={dashboardStyles.header_actionbar_nav}>
       <div className="flex items-center text-xl">
         <FaBars
           className="text-white me-4 cursor-pointer"
@@ -31,13 +31,10 @@ function ActionBar({
             className="w-full px-4 py-1 pl-12 rounded shadow outline-none hidden md:block"
           />
         </div>
-        <div className="text-white">
-          <FaBell className="w-6 h-6" />
-        </div>
 
         <div className="relative">
           <button className="text-white group">
-            <FaUserCircle className="w-6 h-6 mt-1" />
+            <FaDollarSign className="w-6 h-6 mt-1" />
             <div className="z-10 hidden absolute bg-white rounded-lg shadow w-32 group-focus:block top-full right-0">
               <ul className="py-2 text-sm text-gray-950">
                 <li className={dashboardStyles.header_actionbar_orderOption}>
@@ -51,7 +48,14 @@ function ActionBar({
             </div>
           </button>
         </div>
+
+        <div className="text-white">
+          <FaShoppingBasket className="w-6 h-6" />
+        </div>
+
       </div>
     </nav>
   )
 }
+
+export default ActionBar;
