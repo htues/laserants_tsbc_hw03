@@ -16,9 +16,13 @@ const ProductCard: React.FC<ProductCardTypes> = ({ product }) => {
           <span className={productStyles.dboard_price}>
             ${price.toFixed(2)}
           </span>
-          <button className={productStyles.dboard_button}>
-            <FaShoppingCart /> Add to Cart
+          <button className={productStyles.dboard_cartbutton}>
+            <FaShoppingCart /> 
           </button>
+          <button className={productStyles.dboard_listbutton}>
+            <FaStar /> 
+          </button>
+
         </div>
       </div>
     </div>
