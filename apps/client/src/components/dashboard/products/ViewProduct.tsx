@@ -6,6 +6,9 @@ import { productStyles } from '../../ui/twind/styles'
 
 const ViewProduct: React.FC = () => {
   const products = useSelector((state: RootState) => state.products.products)
+  const searchQuery = useSelector(
+    (state: RootState) => state.products.searchQuery,
+  )
   const [visibleProducts, setVisibleProducts] = useState(products.slice(0, 3))
   const [page, setPage] = useState(1)
   const observer = useRef<IntersectionObserver | null>(null)
@@ -38,11 +41,17 @@ const ViewProduct: React.FC = () => {
     return () => observer.current?.disconnect()
   }, [])
 
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  )
+
   return (
     <div className={productStyles.dboard_product_grid}>
-      {visibleProducts.map((product) => (
-        <ProductCard key={product.id} product={product} />
-      ))}
+      {filteredProducts
+        .slice(0, page * numberOfRowsPerPage * columnsPerRow)
+        .map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
       <div id="load-more" className="h-10"></div>
     </div>
   )
