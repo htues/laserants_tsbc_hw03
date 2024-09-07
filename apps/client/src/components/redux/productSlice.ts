@@ -73,6 +73,7 @@ const initialState = {
       imageUrl: 'https://via.placeholder.com/150',
     },
   ],
+  searchQuery: ''
 }
 
 const productSlice = createSlice({
@@ -85,10 +86,13 @@ const productSlice = createSlice({
     sortProductsHighToLow: (state) => {
       state.products = state.products.sort((a, b) => b.price - a.price)
     },
+    setSearchQuery: (state, action: PayloadAction<string>) => {
+      state.searchQuery = action.payload;
+    }
   
   },
 })
 
-export const { sortProductsLowToHigh, sortProductsHighToLow } = productSlice.actions
+export const { sortProductsLowToHigh, sortProductsHighToLow, setSearchQuery } = productSlice.actions
 
 export default productSlice.reducer
