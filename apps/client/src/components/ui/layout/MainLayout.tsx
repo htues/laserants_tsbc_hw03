@@ -17,8 +17,9 @@ function MainLayout() {
         <SideBar />
       </div>
       <div
-        className={`${dashboardStyles.container_main_content} flex items-center justify-center overflow-hidden`}
+        className={`${dashboardStyles.container_main_content} flex flex-col items-center justify-center overflow-hidden`}
       >
+        <div className="w-full h-9"></div>
         <div className={dashboardStyles.container_main_routes}>
           <AppRoutes />
         </div>

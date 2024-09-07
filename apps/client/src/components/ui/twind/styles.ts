@@ -40,5 +40,5 @@ export const productStyles = {
   dboard_listbutton:
     'bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-700 flex items-center',
   dboard_product_grid:
-    'product-list grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4',
+    'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-8',
 }
