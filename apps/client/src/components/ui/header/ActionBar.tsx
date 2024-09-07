@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import {
   FaBars,
   FaSearch,
@@ -8,11 +10,21 @@ import { APP_NAME } from '../../utils/envvars'
 import { ActionBarTypes } from '../../../types/ui.types'
 import { dashboardStyles } from '../twind/styles'
 import OrderOption from '../buttons/OrderOption'
+import { setSearchQuery } from '../../redux/productSlice'
 
 function ActionBar({
   sidebarToggle,
   setSidebarToggle,
 }: Readonly<ActionBarTypes>) {
+  const [query, setQuery] = useState('')
+  const dispatch = useDispatch()
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value)
+    dispatch(setSearchQuery(e.target.value))
+  }
+
+
   return (
     <nav className={dashboardStyles.header_actionbar_nav}>
       <div className="flex items-center text-xl">
@@ -32,6 +44,9 @@ function ActionBar({
           </span>
           <input
             type="text"
+            value={query}
+            onChange={handleInputChange}
+            placeholder='Search by name...'
             className="w-full px-4 py-1 pl-12 rounded shadow outline-none hidden md:block"
           />
         </div>
