@@ -1,17 +1,19 @@
-import {useNavigate} from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { sortProductsLowToHigh, sortProductsHighToLow } from '../../redux/productSlice';
 import {OrderOptionTypes} from '../../../types/ui.types';
 
-function OrderOption({
-    label, path
-}: Readonly<OrderOptionTypes>) {
-    const navigate = useNavigate();
+const OrderOption: React.FC<OrderOptionTypes> = ({label, sortType}) => {
+    const dispatch = useDispatch();
+
     const handleClick = () => {
-        if(path){
-            navigate(path);
+        if(sortType === 'lowToHigh'){
+            dispatch(sortProductsLowToHigh());
+        } else {
+            dispatch(sortProductsHighToLow());
         }
     }
-    
     return <li onClick={handleClick}>{label}</li>
 }
+
 
 export default OrderOption;

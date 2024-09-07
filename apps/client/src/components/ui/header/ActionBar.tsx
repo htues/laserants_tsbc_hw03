@@ -1,5 +1,9 @@
-import { FaBars, FaSearch, FaDollarSign, FaShoppingBasket } from 'react-icons/fa'
-import { useSelector } from 'react-redux'
+import {
+  FaBars,
+  FaSearch,
+  FaDollarSign,
+  FaShoppingBasket,
+} from 'react-icons/fa'
 import { APP_NAME } from '../../utils/envvars'
 import { ActionBarTypes } from '../../../types/ui.types'
 import { dashboardStyles } from '../twind/styles'
@@ -38,11 +42,11 @@ function ActionBar({
             <div className="z-10 hidden absolute bg-white rounded-lg shadow w-32 group-focus:block top-full right-0">
               <ul className="py-2 text-sm text-gray-950">
                 <li className={dashboardStyles.header_actionbar_orderOption}>
-                  <OrderOption label="Lowest to Highest" path="/profile" />
+                  <OrderOption label="Lowest to Highest" sortType="lowToHigh" />
                 </li>
 
                 <li className={dashboardStyles.header_actionbar_orderOption}>
-                  <OrderOption label="Highest to Lowest" path="/settings" />
+                  <OrderOption label="Highest to Lowest" sortType="highToLow" />
                 </li>
               </ul>
             </div>
@@ -52,10 +56,9 @@ function ActionBar({
         <div className="text-white">
           <FaShoppingBasket className="w-6 h-6" />
         </div>
-
       </div>
     </nav>
   )
 }
 
-export default ActionBar;
+export default ActionBar
