@@ -5,5 +5,5 @@ export type ActionBarTypes = {
 
 export type OrderOptionTypes = {
     label: string,
-    path: string,
+    sortType: string,
 }
