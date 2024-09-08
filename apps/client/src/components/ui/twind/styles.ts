@@ -45,10 +45,9 @@ export const productStyles = {
 }
 
 export const formStyles = {
-  modal:
-    'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50',
-  modal_content: 'bg-white rounded-lg shadow-lg p-6 w-full max-w-3xl',
-  modal_close: "absolute top-4 right-4 text-gray-500 cursor-pointer",
+  modal: 'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50',
+  modal_content: 'relative bg-white rounded-lg shadow-lg p-6 w-full max-w-3xl',
+  modal_close: 'absolute top-2 right-2 p-1 rounded-lg text-gray-400 bg-white hover:bg-gray-50 font-bold text-2xl hover:text-gray-600',
   modal_productdetails_image: 'w-full h-64 object-cover rounded-t-lg',
   modal_productdetails_name: 'text-2xl font-bold mt-4',
   modal_productdetails_description: 'mt-2 text-gray-600',
