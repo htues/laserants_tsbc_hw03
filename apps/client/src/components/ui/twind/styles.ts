@@ -52,4 +52,10 @@ export const formStyles = {
   modal_productdetails_name: 'text-2xl font-bold mt-4',
   modal_productdetails_description: 'mt-2 text-gray-600',
   modal_productdetails_price: 'block mt-4 text-xl font-semibold text-gray-800',
+  shopping_container: 'fixed inset-0 z-50 flex items-center justify-end bg-black bg-opacity-50',
+  shopping_content: 'bg-white w-96 h-full p-6 shadow-lg',
+  shopping_title_container: 'flex justify-between items-center mb-4',
+  shopping_title: 'text-2xl font-bold',
+  shopping_content_detail: 'flex flex-col space-y-4',
+  
 }
