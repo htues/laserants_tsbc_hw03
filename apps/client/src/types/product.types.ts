@@ -8,4 +8,5 @@ type Product = {
   
   export type ProductCardTypes = {
     product: Product;
+    onDetailsClick: (product: Product) => void;
   }
