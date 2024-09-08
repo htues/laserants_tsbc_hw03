@@ -44,7 +44,7 @@ export const productStyles = {
   modal:
     'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50',
   modal_content: 'bg-white rounded-lg shadow-lg p-6 w-full max-w-3xl',
-  modal_close: 'absolute top-4 right-4 text-gray-500 cursor-pointer',
+  modal_close: "absolute top-4 right-4 text-gray-500 cursor-pointer",
   modal_image: 'w-full h-64 object-cover rounded-t-lg',
   modal_name: 'text-2xl font-bold mt-4',
   modal_description: 'mt-2 text-gray-600',
