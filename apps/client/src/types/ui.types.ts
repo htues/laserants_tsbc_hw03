@@ -7,3 +7,8 @@ export type OrderOptionTypes = {
     label: string,
     sortType: string,
 }
+
+export type ModalTypes = {
+    onClose: () => void,
+    children: React.ReactNode
+}

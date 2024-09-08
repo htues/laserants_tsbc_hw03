@@ -41,12 +41,16 @@ export const productStyles = {
     'bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-700 flex items-center',
   dboard_product_grid:
     'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mt-8',
+
+}
+
+export const formStyles = {
   modal:
     'fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50',
   modal_content: 'bg-white rounded-lg shadow-lg p-6 w-full max-w-3xl',
   modal_close: "absolute top-4 right-4 text-gray-500 cursor-pointer",
-  modal_image: 'w-full h-64 object-cover rounded-t-lg',
-  modal_name: 'text-2xl font-bold mt-4',
-  modal_description: 'mt-2 text-gray-600',
-  modal_price: 'block mt-4 text-xl font-semibold text-gray-800',
+  modal_productdetails_image: 'w-full h-64 object-cover rounded-t-lg',
+  modal_productdetails_name: 'text-2xl font-bold mt-4',
+  modal_productdetails_description: 'mt-2 text-gray-600',
+  modal_productdetails_price: 'block mt-4 text-xl font-semibold text-gray-800',
 }
