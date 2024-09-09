@@ -7,5 +7,4 @@ export type CartItem = {
 
 export type ShoppingCartTypes = {
     onClose: () => void;
-    children: React.ReactNode;
 }
