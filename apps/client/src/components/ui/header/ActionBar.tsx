@@ -75,7 +75,7 @@ function ActionBar({
         </div>
 
         <div className="text-white">
-          <FaShoppingBasket className="w-6 h-6" />
+          <FaShoppingBasket className="w-6 h-6 cursor-pointer" onClick={toggleCart} />
         </div>
         {cartOpen && <ViewCart onClose={toggleCart} />}
       </div>
