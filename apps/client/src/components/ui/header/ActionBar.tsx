@@ -11,12 +11,15 @@ import { ActionBarTypes } from '../../../types/ui.types'
 import { dashboardStyles } from '../twind/styles'
 import OrderOption from '../buttons/OrderOption'
 import { setSearchQuery } from '../../redux/productSlice'
+import ViewCart from '../../scart/ViewCart'
 
 function ActionBar({
   sidebarToggle,
   setSidebarToggle,
 }: Readonly<ActionBarTypes>) {
   const [query, setQuery] = useState('')
+  const [cartOpen, setCartOpen] = useState(false)
+
   const dispatch = useDispatch()
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -24,6 +27,9 @@ function ActionBar({
     dispatch(setSearchQuery(e.target.value))
   }
 
+  const toggleCart = () => {
+    setCartOpen(!cartOpen)
+  }
 
   return (
     <nav className={dashboardStyles.header_actionbar_nav}>
@@ -71,6 +77,7 @@ function ActionBar({
         <div className="text-white">
           <FaShoppingBasket className="w-6 h-6" />
         </div>
+        {cartOpen && <ViewCart onClose={toggleCart} />}
       </div>
     </nav>
   )
