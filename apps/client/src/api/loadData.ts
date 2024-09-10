@@ -4,9 +4,13 @@ import { AppDispatch } from '../components/redux/store'
 import { toast } from 'react-toastify'
 import { unwrapResult } from '@reduxjs/toolkit'
 
+// type fetchAction = typeof getCategories | typeof getProducts
+type fetchAction = typeof getCategories
+
 const loadData = async (
   tries: number,
   setTries: (tries: number | ((prevTries: number) => number)) => void,
+  actionToDispatch: fetchAction,
 ) => {
   const dispatch = useDispatch<AppDispatch>()
 
@@ -16,17 +20,17 @@ const loadData = async (
   }
 
   try {
-    const action = await dispatch<any>(getCategories())
+    const action = await dispatch<any>(actionToDispatch())
     unwrapResult(action)
 
-    if (getCategories.fulfilled.match(action)) {
+    if (actionToDispatch.fulfilled.match(action)) {
       console.log('categories status: success')
       setTries(0)
-    } else if (getCategories.rejected.match(action)) {
+    } else if (actionToDispatch.rejected.match(action)) {
       console.log('categories status: failed')
       setTries((prevTries: number) => {
         if (prevTries < 3) {
-          loadData(prevTries + 1, setTries)
+          loadData(prevTries + 1, setTries, actionToDispatch)
           return prevTries + 1
         } else {
           console.log('failed to load after 3 attempts')
