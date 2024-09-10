@@ -1,15 +1,24 @@
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import loadData from '../../../api/loadData'
+import { getCategories } from '../../redux/categorySlice'
+import { selectCategories } from '../../redux/categorySelector'
 import { FaHome, FaRegFileAlt } from 'react-icons/fa'
 import { dashboardStyles } from '../../ui/twind/styles'
 
-const testCategories = [
-  'Electronics',
-  'Clothing',
-  'Shoes',
-  'Accessories',
-  'Home',
-]
-
 function Categories() {
+  const [tries, setTries] = useState(0)
+  const dispatch = useDispatch()
+  const categories = useSelector(selectCategories)
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      await loadData(tries, setTries, getCategories)
+      console.log('categories:', categories)
+    }
+    fetchCategories()
+  }, [tries, dispatch, categories])
+
   return (
     <span>
       <ul className={dashboardStyles.sidebar_ul}>
@@ -21,12 +30,15 @@ function Categories() {
         </li>
       </ul>
 
-      {testCategories.map((category) => (
-        <ul key={category} className={dashboardStyles.sidebar_ul}>
+      {categories.map((category) => (
+        <ul key={category.id} className={dashboardStyles.sidebar_ul}>
           <li className={dashboardStyles.sidebar_li}>
-            <a href="/categories" className={dashboardStyles.sidebar_a}>
+            <a
+              href={`/categories/${category.id}`}
+              className={dashboardStyles.sidebar_a}
+            >
               <FaRegFileAlt className={dashboardStyles.sidebar_li_icon} />
-              {category}
+              {category.name}
             </a>
           </li>
         </ul>
