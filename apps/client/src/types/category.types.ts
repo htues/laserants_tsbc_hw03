@@ -1,7 +1,7 @@
 export type Category = {
   id: number
-  name: string
-  description: string
+  name: string | null
+  description: string | null
   status: boolean
 }
 
