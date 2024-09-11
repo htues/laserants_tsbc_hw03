@@ -1,8 +1,11 @@
+import { Product } from './product.types'
+
 export type Category = {
   id: number
   name: string | null
   description: string | null
   status: boolean
+  products?: Product[]
 }
 
 export type CategoryResponse = {
