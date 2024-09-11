@@ -1,17 +1,24 @@
 import { useState, useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../redux/rootSlice'
+import loadData from '../../../api/loadData'
+import { getProducts } from '../../redux/productSlice'
+import { selectProducts } from '../../redux/productSelector'
 import ProductCard from '../../ui/layout/ProductCard'
 import ProductDetails from './ProductDetails'
 import { productStyles } from '../../ui/twind/styles'
 import { ProductCardTypes } from '../../../types/product.types'
 
 const ViewProduct: React.FC = () => {
-  const products = useSelector((state: RootState) => state.products.products)
+  const dispatch = useDispatch()
+  const products = useSelector(selectProducts)
   const searchQuery = useSelector(
     (state: RootState) => state.products.searchQuery,
   )
-  const [visibleProducts, setVisibleProducts] = useState(products.slice(0, 3))
+  const [tries, setTries] = useState(0)
+  const [visibleProducts, setVisibleProducts] = useState<
+    ProductCardTypes['product'][]
+  >([])
   const [selectedProduct, setSelectedProduct] = useState<
     ProductCardTypes['product'] | null
   >(null)
@@ -21,14 +28,26 @@ const ViewProduct: React.FC = () => {
   const columnsPerRow = 3
 
   useEffect(() => {
+    const fetchProducts = async () => {
+      await loadData(tries, setTries, getProducts, dispatch)
+    }
+    fetchProducts()
+  }, [tries, dispatch])
+
+  useEffect(() => {
     const loadMoreProducts = () => {
       const productsToLoad = numberOfRowsPerPage * columnsPerRow
-      const newProducts = products.slice(0, page * productsToLoad)
+      const filteredProducts = products.filter(
+        (product) =>
+          product.name &&
+          product.name.toLowerCase().includes(searchQuery.toLowerCase()),
+      )
+      const newProducts = filteredProducts.slice(0, page * productsToLoad)
       setVisibleProducts(newProducts)
     }
 
     loadMoreProducts()
-  }, [page, products])
+  }, [page, products, searchQuery])
 
   useEffect(() => {
     const handleObserver = (entities: IntersectionObserverEntry[]) => {
@@ -46,10 +65,6 @@ const ViewProduct: React.FC = () => {
     return () => observer.current?.disconnect()
   }, [])
 
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchQuery.toLowerCase()),
-  )
-
   const handleDetailsClick = (product: ProductCardTypes['product']) => {
     setSelectedProduct(product)
   }
@@ -61,15 +76,13 @@ const ViewProduct: React.FC = () => {
   return (
     <>
       <div className={productStyles.dboard_product_grid}>
-        {filteredProducts
-          .slice(0, page * numberOfRowsPerPage * columnsPerRow)
-          .map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-              onDetailsClick={handleDetailsClick}
-            />
-          ))}
+        {visibleProducts.map((product) => (
+          <ProductCard
+            key={product.id}
+            product={product}
+            onDetailsClick={handleDetailsClick}
+          />
+        ))}
         <div id="load-more" className="h-10"></div>
       </div>
       {selectedProduct && (
