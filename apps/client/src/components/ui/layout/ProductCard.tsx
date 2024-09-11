@@ -6,11 +6,15 @@ import React from 'react'
 const ProductCard: React.FC<ProductCardTypes> = ({
   product,
   onDetailsClick,
+  onAddToCartClick,
 }) => {
   const { name, price, imageUrl } = product
 
-  const numericPrice = typeof price === 'string' ? parseFloat(price) : price;
-  const displayPrice = typeof numericPrice === 'number' && !isNaN(numericPrice) ? numericPrice.toFixed(2) : 'N/A';
+  const numericPrice = typeof price === 'string' ? parseFloat(price) : price
+  const displayPrice =
+    typeof numericPrice === 'number' && !isNaN(numericPrice)
+      ? numericPrice.toFixed(2)
+      : 'N/A'
 
   return (
     <div className={productStyles.dboard_card}>
@@ -23,7 +27,10 @@ const ProductCard: React.FC<ProductCardTypes> = ({
         <h2 className={productStyles.dboard_name}>{name}</h2>
         <div className={productStyles.dboard_footer}>
           <span className={productStyles.dboard_price}>${displayPrice}</span>
-          <button className={productStyles.dboard_cartbutton}>
+          <button
+            className={productStyles.dboard_cartbutton}
+            onClick={() => onAddToCartClick(product)}
+          >
             <FaShoppingCart />
           </button>
           <button

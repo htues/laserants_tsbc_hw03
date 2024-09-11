@@ -3,11 +3,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../redux/rootSlice'
 import loadData from '../../../api/loadData'
 import { getProducts } from '../../redux/productSlice'
+import { addItem } from '../../redux/scartSlice'
 import { selectProducts } from '../../redux/productSelector'
 import ProductCard from '../../ui/layout/ProductCard'
 import ProductDetails from './ProductDetails'
 import { productStyles } from '../../ui/twind/styles'
 import { ProductCardTypes } from '../../../types/product.types'
+import { CartItem } from '../../../types/scart.types'
 
 const ViewProduct: React.FC = () => {
   const dispatch = useDispatch()
@@ -73,6 +75,16 @@ const ViewProduct: React.FC = () => {
     setSelectedProduct(null)
   }
 
+  const handleAddToCart = (product: ProductCardTypes['product']) => {
+    const addToCartPayload: CartItem = {
+      id: product.id,
+      name: product.name ?? 'Unknown',
+      price: product.price,
+      quantity: 1,
+    }
+    dispatch(addItem(addToCartPayload))
+  }
+
   return (
     <>
       <div className={productStyles.dboard_product_grid}>
@@ -81,6 +93,7 @@ const ViewProduct: React.FC = () => {
             key={product.id}
             product={product}
             onDetailsClick={handleDetailsClick}
+            onAddToCartClick={handleAddToCart}
           />
         ))}
         <div id="load-more" className="h-10"></div>
