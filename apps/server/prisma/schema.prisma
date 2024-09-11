@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Role {
+  id          Int      @id @default(autoincrement())
+  name        String  @unique
+  description String?
+  status      Boolean
+  users       User[]   @relation("RoleToUsers")
+}
+
+model User {
+  id        Int    @id @default(autoincrement())
+  lastname  String
+  firstname String
+  email     String @unique
+  password  String
+  roleId    Int
+  status    Boolean
+  role      Role   @relation(fields: [roleId], references: [id], name: "RoleToUsers")
+
+  @@index([roleId])
+}
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  description String?
+  status      Boolean
+  products    Product[] @relation("CategoryToProducts")
+}
+
+model Product {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  description String?
+  price       Decimal   @default(0.00)
+  status      Boolean
+  categoryId      Int
+  category        Category      @relation(fields: [categoryId], references: [id], name: "CategoryToProducts")
+  variants    Variant[] @relation("ProductToVariants")
+  collections Collection[] @relation("ProductToCollections")
+
+  @@index([categoryId])
+}
+
+model Variant {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  description String?
+  status      Boolean
+  productId   Int
+  product     Product   @relation(fields: [productId], references: [id], name: "ProductToVariants")
+
+  @@index([productId])
+}
+
+model Collection {
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
+  description String?
+  status      Boolean
+  productId   Int
+  product     Product   @relation(fields: [productId], references: [id], name: "ProductToCollections")
+
+  @@index([productId])
+}
