@@ -2,14 +2,15 @@ import { AppDispatch } from '../components/redux/store';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { toast } from 'react-toastify';
 import { getCategories } from '../components/redux/categorySlice';
+import { getProducts } from '../components/redux/productSlice';
 
-// type fetchAction = typeof getCategories | typeof getProducts
-type FetchAction = typeof getCategories;
+type fetchAction = typeof getCategories | typeof getProducts
+//type FetchAction = typeof getCategories;
 
 const loadData = async (
   tries: number,
   setTries: (tries: number | ((prevTries: number) => number)) => void,
-  actionToDispatch: FetchAction,
+  actionToDispatch: fetchAction,
   dispatch: AppDispatch
 ) => {
   if (tries > 3) {
