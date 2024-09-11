@@ -8,11 +8,14 @@ const ProductDetails: React.FC<{
 }> = ({ product, onClose }) => {
   const { name, price, description, imageUrl } = product
 
+  const numericPrice = typeof price === 'string' ? parseFloat(price) : price;
+  const displayPrice = typeof numericPrice === 'number' && !isNaN(numericPrice) ? numericPrice.toFixed(2) : 'N/A';
+
   return (
     <Modal onClose={onClose}>
       <img
         src={imageUrl}
-        alt={name}
+        alt={name ?? ''}
         className={formStyles.modal_productdetails_image}
       />
       <h2 className={formStyles.modal_productdetails_name}>{name}</h2>
@@ -20,7 +23,7 @@ const ProductDetails: React.FC<{
         {description}
       </p>
       <span className={formStyles.modal_productdetails_price}>
-        ${price.toFixed(2)}
+        ${displayPrice}
       </span>
     </Modal>
   )
