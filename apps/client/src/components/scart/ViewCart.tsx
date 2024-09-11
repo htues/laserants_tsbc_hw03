@@ -18,19 +18,27 @@ const ViewCart: React.FC<ShoppingCartTypes> = ({ onClose }) => {
 
   return (
     <ShoppingCart onClose={onClose}>
-      {cartItems.map((item) => (
-        <div key={item.id} className="flex justify-between items-center">
-          <div>
-            <h3 className="text-lg font-semibold">{item.name}</h3>
-            <p className="text-gray-500">${item.price.toFixed(2)}</p>
+      {cartItems.map((item) => {
+        const numericPrice = typeof item.price === 'string' ? parseFloat(item.price) : item.price;
+        const displayPrice =
+          typeof numericPrice === 'number' && !isNaN(numericPrice)
+            ? numericPrice.toFixed(2)
+            : 'N/A';
+
+        return (
+          <div key={item.id} className="flex justify-between items-center">
+            <div>
+              <h3 className="text-lg font-semibold">{item.name}</h3>
+              <p className="text-gray-500">${displayPrice}</p> {/* Display formatted price */}
+            </div>
+            <div className="flex items-center space-x-2">
+              <button onClick={() => dispatch(decreaseItem(item.id))}>-</button>
+              <span>{item.quantity}</span>
+              <button onClick={() => dispatch(increaseItem(item.id))}>+</button>
+            </div>
           </div>
-          <div className="flex items-center space-x-2">
-            <button onClick={() => dispatch(decreaseItem(item.id))}>-</button>
-            <span>{item.quantity}</span>
-            <button onClick={() => dispatch(increaseItem(item.id))}>+</button>
-          </div>
-        </div>
-      ))}
+        );
+      })}
 
       <div className="mt-6">
         <div className="flex justify-between">
@@ -47,7 +55,8 @@ const ViewCart: React.FC<ShoppingCartTypes> = ({ onClose }) => {
         </div>
       </div>
     </ShoppingCart>
-  )
-}
+  );
+};
+
 
 export default ViewCart
