@@ -8,6 +8,8 @@ const products = [
     categoryId: 1,
     price: 29.99,
     status: true,
+    imageUrl:
+      'https://pixabay.com/es/photos/tribuna-juguete-masculino-ni%C3%B1o-330930/',
   },
   {
     id: 2,
@@ -16,6 +18,8 @@ const products = [
     categoryId: 1,
     price: 14.99,
     status: true,
+    imageUrl:
+      'https://pixabay.com/es/photos/colt-single-action-marcapasos-4394862/',
   },
   {
     id: 3,
@@ -24,6 +28,8 @@ const products = [
     categoryId: 2,
     price: 19.99,
     status: true,
+    imageUrl:
+      'https://pixabay.com/es/photos/modelo-t-shirt-maniqu%C3%AD-azul-2710535/',
   },
   {
     id: 4,
@@ -32,6 +38,8 @@ const products = [
     categoryId: 2,
     price: 39.99,
     status: true,
+    imageUrl:
+      'https://pixabay.com/es/photos/jeans-blanco-denim-azul-fondos-4907233/',
   },
   {
     id: 5,
@@ -40,6 +48,8 @@ const products = [
     categoryId: 3,
     price: 499.99,
     status: true,
+    imageUrl:
+      'https://pixabay.com/es/photos/garden-patio-appeltern-furniture-5353123/',
   },
   {
     id: 6,
@@ -48,6 +58,8 @@ const products = [
     categoryId: 3,
     price: 299.99,
     status: true,
+    imageUrl:
+      'https://pixabay.com/es/photos/taza-tabla-bebida-cafe%C3%ADna-desayuno-5089934/',
   },
   {
     id: 7,
@@ -56,6 +68,8 @@ const products = [
     categoryId: 4,
     price: 9.99,
     status: true,
+    imageUrl:
+      'https://pixabay.com/es/photos/pizza-cocina-pizzeria-comida-5275191/',
   },
   {
     id: 8,
@@ -64,6 +78,8 @@ const products = [
     categoryId: 4,
     price: 5.99,
     status: true,
+    imageUrl:
+      'https://pixabay.com/es/photos/hamburguer-foot-burguer-hamburguesa-2253344/',
   },
 ]
 
