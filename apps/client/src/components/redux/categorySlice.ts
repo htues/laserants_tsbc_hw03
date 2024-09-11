@@ -23,12 +23,6 @@ export const getCategories = createAsyncThunk<
 >('categories/getCategories', async (_, { rejectWithValue }) => {
   try {
     const response: Category[] = await productsOps.getCategories()
-    console.log('Axios response data:', response)
-
-    if (!response) {
-      console.log('Categories are undefined or null')
-      return []
-    }
 
     const categories = response.sort((a, b) => {
       if (a.name && b.name) {
@@ -36,7 +30,6 @@ export const getCategories = createAsyncThunk<
       }
       return 0
     })
-    console.log('Processed categories:', categories) // Log the processed categories
     return categories
   } catch (error) {
     const apiError: ApiError = error as ApiError
@@ -61,18 +54,15 @@ const categorySlice = createSlice({
       .addCase(getCategories.fulfilled, (state, action) => {
         state.loading = false
         state.status = 'fulfilled'
-        console.log('Action payload:', action.payload) // Log the action payload
         state.categories = action.payload.map((category) => ({
           ...category,
           products: [],
         }))
-        console.log('Fetched categories on the store:', state.categories) // Add logging
       })
       .addCase(getCategories.rejected, (state, action) => {
         state.loading = false
         state.status = 'rejected'
         state.error = action.payload as string
-        console.error('Failed to fetch categories:', action.error.message) // Add logging
       })
   },
 })

@@ -18,10 +18,6 @@ function Categories() {
     fetchCategories();
   }, [tries, dispatch]);
 
-  useEffect(() => {
-    console.log('Fetched categories:', categories);
-  }, [categories]);
-
   return (
     <span>
       <ul className={dashboardStyles.sidebar_ul}>
