@@ -17,6 +17,9 @@ const ViewProduct: React.FC = () => {
   const searchQuery = useSelector(
     (state: RootState) => state.products.searchQuery,
   )
+  const selectedCategory = useSelector(
+    (state: RootState) => state.categories.selectedCategory,
+  )
   const [tries, setTries] = useState(0)
   const [visibleProducts, setVisibleProducts] = useState<
     ProductCardTypes['product'][]
@@ -34,7 +37,7 @@ const ViewProduct: React.FC = () => {
       await loadData(tries, setTries, getProducts, dispatch)
     }
     fetchProducts()
-  }, [tries, dispatch])
+  }, [tries, dispatch, selectedCategory])
 
   useEffect(() => {
     const loadMoreProducts = () => {
@@ -42,14 +45,15 @@ const ViewProduct: React.FC = () => {
       const filteredProducts = products.filter(
         (product) =>
           product.name &&
-          product.name.toLowerCase().includes(searchQuery.toLowerCase()),
+          product.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
+          (!selectedCategory || product.categoryId === selectedCategory),
       )
       const newProducts = filteredProducts.slice(0, page * productsToLoad)
       setVisibleProducts(newProducts)
     }
 
     loadMoreProducts()
-  }, [page, products, searchQuery])
+  }, [page, products, searchQuery, selectedCategory])
 
   useEffect(() => {
     const handleObserver = (entities: IntersectionObserverEntry[]) => {
