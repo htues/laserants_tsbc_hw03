@@ -3,10 +3,16 @@ import { CartItem } from '../../types/scart.types';
 
 type ShoppingCartState = {
   cartItems: CartItem[];
+  subtotal?: number;
+  tax?: number;
+  total?: number;
 };
 
 const initialState: ShoppingCartState = {
   cartItems: [],
+  subtotal: 0,
+  tax: 0,
+  total: 0,
 };
 
 const shoppingCartSlice = createSlice({
