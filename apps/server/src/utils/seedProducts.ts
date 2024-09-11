@@ -9,7 +9,7 @@ const products = [
     price: 29.99,
     status: true,
     imageUrl:
-      'https://pixabay.com/es/photos/tribuna-juguete-masculino-ni%C3%B1o-330930/',
+      'https://static.thcdn.com/images/large/webp//productimg/1600/1600/15066969-1055120637632265.jpg',
   },
   {
     id: 2,
@@ -19,7 +19,7 @@ const products = [
     price: 14.99,
     status: true,
     imageUrl:
-      'https://pixabay.com/es/photos/colt-single-action-marcapasos-4394862/',
+      'https://m.media-amazon.com/images/I/71zS41vyMQL._AC_SL1500_.jpg',
   },
   {
     id: 3,
@@ -29,7 +29,7 @@ const products = [
     price: 19.99,
     status: true,
     imageUrl:
-      'https://pixabay.com/es/photos/modelo-t-shirt-maniqu%C3%AD-azul-2710535/',
+      'https://sportsgoodsmarket.com/wp-content/uploads/2021/04/JUST-SUPERSTAR-T-SHIRT-I.BLUE_.jpg',
   },
   {
     id: 4,
@@ -39,7 +39,7 @@ const products = [
     price: 39.99,
     status: true,
     imageUrl:
-      'https://pixabay.com/es/photos/jeans-blanco-denim-azul-fondos-4907233/',
+      'https://d1fufvy4xao6k9.cloudfront.net/images/blog/posts/2024/02/shaping-jeans.jpg',
   },
   {
     id: 5,
@@ -49,7 +49,7 @@ const products = [
     price: 499.99,
     status: true,
     imageUrl:
-      'https://pixabay.com/es/photos/garden-patio-appeltern-furniture-5353123/',
+      'https://www.creativefabrica.com/wp-content/uploads/2019/11/22/1574412817/Sofa-sketch-drawing-style-580x386.jpg',
   },
   {
     id: 6,
@@ -59,7 +59,7 @@ const products = [
     price: 299.99,
     status: true,
     imageUrl:
-      'https://pixabay.com/es/photos/taza-tabla-bebida-cafe%C3%ADna-desayuno-5089934/',
+      'https://static.wixstatic.com/media/9209ab_5eb8fad32a6a48528a3eb9e6a318e7a7~mv2.jpg/v1/fill/w_633,h_460,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/9209ab_5eb8fad32a6a48528a3eb9e6a318e7a7~mv2.jpg',
   },
   {
     id: 7,
@@ -69,7 +69,7 @@ const products = [
     price: 9.99,
     status: true,
     imageUrl:
-      'https://pixabay.com/es/photos/pizza-cocina-pizzeria-comida-5275191/',
+      'https://www.allrecipes.com/thmb/ULiSEmH8Tje7Hh-TW1aN2P8dC98=/750x0/filters:no_upscale():max_bytes(150000):strip_icc():format(webp)/240376-homemade-pepperoni-pizza-Beauty-3x4-1-6ae54059c23348b3b9a703b6a3067a44.jpg',
   },
   {
     id: 8,
@@ -79,7 +79,7 @@ const products = [
     price: 5.99,
     status: true,
     imageUrl:
-      'https://pixabay.com/es/photos/hamburguer-foot-burguer-hamburguesa-2253344/',
+      'https://www.plasutil.com.br/wp-content/uploads/2022/04/Hamburguer.jpg',
   },
 ]
 
@@ -99,6 +99,7 @@ async function seedProducts() {
           description: product.description,
           price: product.price,
           status: product.status,
+          imageUrl: product.imageUrl,
           category: { connect: { id: product.categoryId } },
           variants: { create: [] },
         } as any,
