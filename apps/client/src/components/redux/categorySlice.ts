@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit'
 import { productsOps } from '../../api/nodeEcommerce'
 import {
   Category,
@@ -11,6 +11,7 @@ import { RootState } from './rootSlice'
 const initialState: CategoryState = {
   categories: [],
   category: null,
+  selectedCategory: null,
   loading: false,
   status: 'idle',
   error: null,
@@ -44,7 +45,11 @@ export const getCategories = createAsyncThunk<
 const categorySlice = createSlice({
   name: 'categories',
   initialState,
-  reducers: {},
+  reducers: {
+    setSelectedCategory(state, action: PayloadAction<number | null>) {
+      state.selectedCategory = action.payload
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getCategories.pending, (state) => {
@@ -66,5 +71,7 @@ const categorySlice = createSlice({
       })
   },
 })
+
+export const { setSelectedCategory } = categorySlice.actions
 
 export default categorySlice.reducer

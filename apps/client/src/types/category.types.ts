@@ -17,6 +17,7 @@ export type CategoryResponse = {
 export type CategoryState = {
   categories: Category[]
   category: Category | null
+  selectedCategory: number | null
   loading: boolean
   status: 'idle' | 'loading' | 'fulfilled' | 'rejected'
   error: string | null
