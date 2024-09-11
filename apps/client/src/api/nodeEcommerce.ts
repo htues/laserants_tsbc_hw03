@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { BACKEND_URL } from '../components/utils/envvars'
-import { CategoryResponse } from '../types/category.types'
+import { Category } from '../types/category.types'
 
 const instance = axios.create({
   baseURL: BACKEND_URL,
@@ -8,9 +8,9 @@ const instance = axios.create({
 })
 
 export const productsOps = {
-  async getCategories(): Promise<CategoryResponse> {
+  async getCategories(): Promise<Category[]> {
     const response = await instance.get(`${BACKEND_URL}/categories/categories`);
-    return response.data as CategoryResponse;
+    return response.data as Category[];
   },
   async getProducts() {
     const response = await instance.get(`${BACKEND_URL}/products/products`);
