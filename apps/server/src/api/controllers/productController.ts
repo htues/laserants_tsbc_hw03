@@ -3,7 +3,8 @@ import * as productService from "../services/productService";
 
 export const getProducts = async (req: Request, res: Response) => {
   try {
-    const products = await productService.getProducts();
+    const catId = parseInt(req.params.categoryId, 10);
+    const products = await productService.getProducts(catId);
     res.status(200).json(products);
   } catch (error: unknown) {
     console.error("Error getting products:", error);
