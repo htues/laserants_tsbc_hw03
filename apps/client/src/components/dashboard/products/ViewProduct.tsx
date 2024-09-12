@@ -34,7 +34,11 @@ const ViewProduct: React.FC = () => {
 
   useEffect(() => {
     const fetchProducts = async () => {
-      await loadData(tries, setTries, getProducts, dispatch)
+      try {
+        await loadData(tries, setTries, getProducts, dispatch)
+      } catch (error) {
+        console.error('Failed to fetch products:', error)
+      }
     }
     fetchProducts()
   }, [tries, dispatch, selectedCategory])
