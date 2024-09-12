@@ -30,6 +30,7 @@ export type Product = {
     status: 'idle' | 'loading' | 'fulfilled' | 'rejected';
     error: string | null;
     searchQuery: string;
+    categoryId: number;
   }
 
   export type ApiError = {

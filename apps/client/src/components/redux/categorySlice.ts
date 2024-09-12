@@ -11,7 +11,7 @@ import { RootState } from './rootSlice'
 const initialState: CategoryState = {
   categories: [],
   category: null,
-  selectedCategory: null,
+  selectedCategory: 0,
   loading: false,
   status: 'idle',
   error: null,
