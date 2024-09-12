@@ -10,7 +10,7 @@ export const getProducts = async (categoryId?: number): Promise<Product[]> => {
     },
   };
 
-  if (categoryId !== undefined && categoryId !== null) {
+  if (categoryId !== undefined && categoryId !== null && categoryId > 0) {
     query.where = {
       categoryId: categoryId,
     };
