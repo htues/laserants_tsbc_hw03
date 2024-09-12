@@ -14,11 +14,11 @@ const initialState: ProductState = {
 
 export const getProducts = createAsyncThunk<
   Product[],
-  void,
+  number | undefined,
   { rejectValue: string }
->('products/getProducts', async (_, { rejectWithValue }) => {
+>('products/getProducts', async (categoryId, { rejectWithValue }) => {
   try {
-    const response: Product[] = await productsOps.getProducts();
+    const response: Product[] = await productsOps.getProducts(categoryId);
 
     const products = response.sort((a, b) => {
       if (a.name && b.name) {

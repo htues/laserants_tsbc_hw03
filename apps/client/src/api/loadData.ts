@@ -5,7 +5,6 @@ import { getCategories } from '../components/redux/categorySlice';
 import { getProducts } from '../components/redux/productSlice';
 
 type fetchAction = typeof getCategories | typeof getProducts
-//type FetchAction = typeof getCategories;
 
 const loadData = async (
   tries: number,

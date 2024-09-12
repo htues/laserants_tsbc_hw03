@@ -13,8 +13,8 @@ export const productsOps = {
     const response = await instance.get(`${BACKEND_URL}/categories/categories`);
     return response.data as Category[];
   },
-  async getProducts(): Promise<Product[]> {
-    const response = await instance.get(`${BACKEND_URL}/products/products`);
+  async getProducts(categoryId?: number): Promise<Product[]> {
+    const response = await instance.get(`${BACKEND_URL}/products/products/${categoryId}`);
     return response.data as Product[];
   },
 };
