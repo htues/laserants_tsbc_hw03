@@ -2,6 +2,40 @@
 
 This is the Bootcamp's Project Monorepo.
 
+# Frontend side technical details
+
+## Tech stack:
+
+- Content manager: Redux toolkit
+- Routing: React router dom
+- Css framework: Tailwind
+
+## Design patterns:
+
+- Modular design: breaking down the application into smaller, self contained modules
+- Feature-based structure: organizing files by feature or functionality
+- Container-presenter: separating container component (handles state and logic) from presentational (handle UI)
+
+## Directory Structure:
+
+| Directory | Description | Notes |
+|-----------|-------------|-------|
+| /src/api      | API calls and services |       |
+| /src/components    | reusable components  |       |
+| /src/components/redux   | redux store|       |
+| /src/components/ui   | UI components|       |
+| /routes  | route definitions     |       |
+| /types     | Typescript types   |       |
+
+## Walkthrough video series
+- [Dashboard layout part 1](https://youtu.be/gjYtTSeWzqU)
+- [Dashboard layout part 2](https://youtu.be/3eLndynypi8)
+- [Displaying mocking data](https://youtu.be/x74WC-VQ3_0)
+- [Sort and searching ops](https://youtu.be/eJSMetlbcQo)
+- [Product details and Shopping Cart](https://youtu.be/hdzUp9P6oBE)
+- [Loading categories from the backend](https://youtu.be/Y7srodNqU2M)
+- [Proof of Concept](https://youtu.be/2UCt9PVcyog)
+
 # Server side technical details
 
 ## Data layer
