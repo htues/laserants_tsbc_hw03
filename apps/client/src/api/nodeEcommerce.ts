@@ -14,7 +14,8 @@ export const productsOps = {
     return response.data as Category[];
   },
   async getProducts(categoryId?: number): Promise<Product[]> {
-    const response = await instance.get(`${BACKEND_URL}/products/products/${categoryId}`);
+    const url = categoryId !== undefined ? `${BACKEND_URL}/products/products/${categoryId}` : `${BACKEND_URL}/products/products`;
+    const response = await instance.get(url);
     return response.data as Product[];
-  },
+  }
 };
