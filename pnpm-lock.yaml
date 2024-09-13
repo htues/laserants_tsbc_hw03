@@ -41,6 +41,9 @@ importers:
       axios:
         specifier: ^1.7.7
         version: 1.7.7
+      dotenv:
+        specifier: ^16.4.5
+        version: 16.4.5
       formik:
         specifier: ^2.4.6
         version: 2.4.6(react@18.3.1)
