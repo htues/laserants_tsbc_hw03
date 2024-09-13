@@ -6,7 +6,7 @@ RUN npm install -g pnpm@8.15.6
 
 RUN pnpm --version
 
-COPY package.json ./
+COPY package.json pnpm-lock.yaml ./
 RUN pnpm install
 
 COPY . .
