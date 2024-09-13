@@ -11,6 +11,11 @@ COPY . .
 COPY package.json ./
 RUN pnpm install
 
+WORKDIR /app/apps/server
+RUN pnpm prisma generate
+
+WORKDIR /app
+
 EXPOSE 8012
 EXPOSE 5173
 
