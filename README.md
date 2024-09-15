@@ -35,6 +35,7 @@ This is the Bootcamp's Project Monorepo.
 - [Product details and Shopping Cart](https://youtu.be/hdzUp9P6oBE)
 - [Loading categories from the backend](https://youtu.be/Y7srodNqU2M)
 - [Proof of Concept](https://youtu.be/2UCt9PVcyog)
+- [Dockerizing the project](https://youtu.be/T4Wgk1A-oyY)
 
 # Server side technical details
 
