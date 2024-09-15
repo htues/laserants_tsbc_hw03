@@ -27,9 +27,26 @@ const users = [
     }
 ];
 
-async function resetIdSequences() {
-    await prisma.$executeRaw`ALTER SEQUENCE "User_id_seq" RESTART WITH 1`;
-}
+async function sequenceExists(sequenceName: string): Promise<boolean> {
+    const result = await prisma.$queryRaw<{ exists: boolean }[]>`
+      SELECT EXISTS (
+        SELECT FROM information_schema.sequences 
+        WHERE sequence_schema = 'public' 
+        AND sequence_name = ${sequenceName}
+      );
+    `;
+    return result[0].exists;
+  }
+  
+  async function resetIdSequences() {
+    const sequenceName = 'Role_id_seq';
+    const exists = await sequenceExists(sequenceName);
+    if (exists) {
+        await prisma.$executeRaw`ALTER SEQUENCE "User_id_seq" RESTART WITH 1`;
+    } else {
+      console.log(`Sequence "${sequenceName}" does not exist, skipping reset`);
+    }
+  }
 
 async function seedUsers() {
     try{
