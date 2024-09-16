@@ -35,8 +35,8 @@ jobs:
 
     - name: Deploy ecommerce_monorepo to ACI
       run: |
-        az container create --resource-group laserantsgroup --name ecommerce-monorepo --image ${{ secrets.DOCKER_USERNAME }}/ecommerce_monorepo:latest --cpu 1 --memory 1 --ports 80 --dns-name-label ecommerce-monorepo --registry-login-server index.docker.io --registry-username ${{ secrets.DOCKER_USERNAME }} --registry-password ${{ secrets.DOCKER_PASSWORD }}
+        az container create --resource-group laserantsgroup --name ecommerce-monorepo --image ${{ secrets.DOCKER_HUB_USERNAME }}/ecommerce_monorepo:0.0.1 --cpu 1 --memory 1 --ports 80 --dns-name-label ecommerce-monorepo --registry-login-server index.docker.io --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} --registry-password ${{ secrets.DOCKER_HUB_PAT }}
 
     - name: Deploy pgecommerce to ACI
       run: |
-        az container create --resource-group laserantsgroup --name pgecommerce --image ${{ secrets.DOCKER_USERNAME }}/pgecommerce:latest --cpu 1 --memory 1 --ports 80 --dns-name-label pgecommerce --registry-login-server index.docker.io --registry-username ${{ secrets.DOCKER_USERNAME }} --registry-password ${{ secrets.DOCKER_PASSWORD }}
+        az container create --resource-group laserantsgroup --name pgecommerce --image ${{ secrets.DOCKER_HUB_USERNAME }}/pgecommerce:0.0.1 --cpu 1 --memory 1 --ports 80 --dns-name-label pgecommerce --registry-login-server index.docker.io --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} --registry-password ${{ secrets.DOCKER_HUB_PAT }}
