@@ -26,9 +26,6 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Register Microsoft.ContainerInstance provider
-      run: az provider register --namespace Microsoft.ContainerInstance
-
     - name: Ensure resource group exists
       run: |
         if ! az group exists --name laserantsgroup; then
