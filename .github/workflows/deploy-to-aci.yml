@@ -22,10 +22,9 @@ jobs:
         docker pull hftamayo/pgecommerce:0.0.1
 
     - name: Set up Azure CLI
-      uses: azure/cli@v1
-
-    - name: Log in to Azure
-      run: az login --service-principal --username ${{ secrets.AZURE_CREDENTIALS.clientId }} --password ${{ secrets.AZURE_CREDENTIALS.clientSecret }} --tenant ${{ secrets.AZURE_CREDENTIALS.tenantId }}
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Ensure resource group exists
       run: |
@@ -35,8 +34,8 @@ jobs:
 
     - name: Deploy ecommerce_monorepo to ACI
       run: |
-        az container create --resource-group laserantsgroup --name ecommerce-monorepo --image ${{ secrets.DOCKER_HUB_USERNAME }}/ecommerce_monorepo:0.0.1 --cpu 1 --memory 1 --ports 80 --dns-name-label ecommerce-monorepo --registry-login-server index.docker.io --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} --registry-password ${{ secrets.DOCKER_HUB_PAT }}
+        az container create --resource-group laserantsgroup --name ecommerce-monorepo --image hftamayo/ecommerce_monorepo:0.0.1 --cpu 1 --memory 1 --ports 80 --dns-name-label ecommerce-monorepo --registry-login-server index.docker.io --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} --registry-password ${{ secrets.DOCKER_HUB_PAT }}
 
     - name: Deploy pgecommerce to ACI
       run: |
-        az container create --resource-group laserantsgroup --name pgecommerce --image ${{ secrets.DOCKER_HUB_USERNAME }}/pgecommerce:0.0.1 --cpu 1 --memory 1 --ports 80 --dns-name-label pgecommerce --registry-login-server index.docker.io --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} --registry-password ${{ secrets.DOCKER_HUB_PAT }}
+        az container create --resource-group laserantsgroup --name pgecommerce --image hftamayo/pgecommerce:0.0.1 --cpu 1 --memory 1 --ports 80 --dns-name-label pgecommerce --registry-login-server index.docker.io --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} --registry-password ${{ secrets.DOCKER_HUB_PAT }}
