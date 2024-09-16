@@ -18,8 +18,8 @@ jobs:
 
     - name: Pull Docker images
       run: |
-        docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/ecommerce_monorepo:0.0.1
-        docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/pgecommerce:0.0.1
+        docker pull hftamayo/ecommerce_monorepo:0.0.1
+        docker pull hftamayo/pgecommerce:0.0.1
 
     - name: Set up Azure CLI
       uses: azure/cli@v1
