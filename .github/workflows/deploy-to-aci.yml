@@ -32,16 +32,10 @@ jobs:
           az group create --name laserantsgroup --location westus
         fi
 
-    - name: Ensure virtual network exists
-      run: |
-        if ! az network vnet show --resource-group laserantsgroup --name laserantsvnet; then
-          az network vnet create --resource-group laserantsgroup --name laserantsvnet --address-prefix 10.0.0.0/16 --subnet-name lasersubnet --subnet-prefix 10.0.0.0/24
-        fi
-
     - name: Deploy ecommerce_monorepo to ACI
       run: |
-        az container create --resource-group laserantsgroup --name ecommerce-monorepo --image hftamayo/ecommerce_monorepo:0.0.1 --cpu 1 --memory 1 --ports 5173 8012 --dns-name-label ecommerce-monorepo --registry-login-server index.docker.io --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} --registry-password ${{ secrets.DOCKER_HUB_PAT }} --vnet laserantsvnet --subnet lasersubnet --ip-address Public
+        az container create --resource-group laserantsgroup --name ecommerce-monorepo --image hftamayo/ecommerce_monorepo:0.0.1 --cpu 1 --memory 1 --ports 5173 8012 --dns-name-label ecommerce-monorepo --registry-login-server index.docker.io --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} --registry-password ${{ secrets.DOCKER_HUB_PAT }} --ip-address Public
 
     - name: Deploy pgecommerce to ACI
       run: |
-        az container create --resource-group laserantsgroup --name pgecommerce --image hftamayo/pgecommerce:0.0.1 --cpu 1 --memory 1 --ports 5432 --dns-name-label pgecommerce --registry-login-server index.docker.io --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} --registry-password ${{ secrets.DOCKER_HUB_PAT }} --vnet laserantsvnet --subnet lasersubnet --ip-address Public
+        az container create --resource-group laserantsgroup --name pgecommerce --image hftamayo/pgecommerce:0.0.1 --cpu 1 --memory 1 --ports 5432 --dns-name-label pgecommerce --registry-login-server index.docker.io --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} --registry-password ${{ secrets.DOCKER_HUB_PAT }} --ip-address Public
