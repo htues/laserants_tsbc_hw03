@@ -1,0 +1,42 @@
+name: Deploy to ACI
+
+on:
+  push:
+    branches:
+      - unstable
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Log in to Docker Hub
+      run: echo "${{ secrets.DOCKER_HUB_PAT }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
+
+    - name: Pull Docker images
+      run: |
+        docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/ecommerce_monorepo:0.0.1
+        docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/pgecommerce:0.0.1
+
+    - name: Set up Azure CLI
+      uses: azure/cli@v1
+
+    - name: Log in to Azure
+      run: az login --service-principal --username ${{ secrets.AZURE_CREDENTIALS.clientId }} --password ${{ secrets.AZURE_CREDENTIALS.clientSecret }} --tenant ${{ secrets.AZURE_CREDENTIALS.tenantId }}
+
+    - name: Ensure resource group exists
+      run: |
+        if ! az group exists --name laserantsgroup; then
+          az group create --name laserantsgroup --location westus
+        fi
+
+    - name: Deploy ecommerce_monorepo to ACI
+      run: |
+        az container create --resource-group laserantsgroup --name ecommerce-monorepo --image ${{ secrets.DOCKER_USERNAME }}/ecommerce_monorepo:latest --cpu 1 --memory 1 --ports 80 --dns-name-label ecommerce-monorepo --registry-login-server index.docker.io --registry-username ${{ secrets.DOCKER_USERNAME }} --registry-password ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Deploy pgecommerce to ACI
+      run: |
+        az container create --resource-group laserantsgroup --name pgecommerce --image ${{ secrets.DOCKER_USERNAME }}/pgecommerce:latest --cpu 1 --memory 1 --ports 80 --dns-name-label pgecommerce --registry-login-server index.docker.io --registry-username ${{ secrets.DOCKER_USERNAME }} --registry-password ${{ secrets.DOCKER_PASSWORD }}
