@@ -9,7 +9,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["jest"] // Removed "node"
+    "types": ["jest", "@testing-library/jest-dom"] // Removed "node"
   },
   "include": ["src", "test"]
 }
