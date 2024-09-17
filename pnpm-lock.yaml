@@ -123,6 +123,9 @@ importers:
       prettier:
         specifier: ^3.3.2
         version: 3.3.2
+      redux-mock-store:
+        specifier: ^1.5.4
+        version: 1.5.4
       tailwindcss:
         specifier: ^3.4.4
         version: 3.4.10
@@ -5212,6 +5215,12 @@ packages:
     dependencies:
       indent-string: 4.0.0
       strip-indent: 3.0.0
+    dev: true
+
+  /redux-mock-store@1.5.4:
+    resolution: {integrity: sha512-xmcA0O/tjCLXhh9Fuiq6pMrJCwFRaouA8436zcikdIpYWWCjU76CRk+i2bHx8EeiSiMGnB85/lZdU3wIJVXHTA==}
+    dependencies:
+      lodash.isplainobject: 4.0.6
     dev: true
 
   /redux-thunk@3.1.0(redux@5.0.1):
