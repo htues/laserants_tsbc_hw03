@@ -12,7 +12,7 @@ import { OrderOptionTypes } from '../../../../src/types/ui.types'
 const mockStore = configureMockStore([])
 const store = mockStore({})
 
-jest.mock('../../redux/productSlice', () => ({
+jest.mock('../../../../src/components/redux/productSlice', () => ({
   sortProductsLowToHigh: jest.fn(() => ({ type: 'sortProductsLowToHigh' })),
   sortProductsHighToLow: jest.fn(() => ({ type: 'sortProductsHighToLow' })),
 }))
