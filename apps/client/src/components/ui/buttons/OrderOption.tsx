@@ -1,3 +1,4 @@
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import { sortProductsLowToHigh, sortProductsHighToLow } from '../../redux/productSlice';
 import {OrderOptionTypes} from '../../../types/ui.types';
