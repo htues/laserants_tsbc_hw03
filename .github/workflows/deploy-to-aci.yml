@@ -52,6 +52,18 @@ jobs:
       run: |
         az network vnet subnet update --resource-group laserantsgroup --vnet-name laserantsvnet --name lasersubnet --network-security-group laserantsnsg
 
+    - name: Delete existing ecommerce-monorepo container group
+      run: |
+        if az container show --resource-group laserantsgroup --name ecommerce-monorepo; then
+          az container delete --resource-group laserantsgroup --name ecommerce-monorepo --yes
+        fi
+
+    - name: Delete existing pgecommerce container group
+      run: |
+        if az container show --resource-group laserantsgroup --name pgecommerce; then
+          az container delete --resource-group laserantsgroup --name pgecommerce --yes
+        fi
+
     - name: Deploy ecommerce_monorepo to ACI
       run: |
         az container create --resource-group laserantsgroup --name ecommerce-monorepo --image hftamayo/ecommerce_monorepo:0.0.1 --cpu 1 --memory 1 --ports 5173 8012 --registry-login-server index.docker.io --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} --registry-password ${{ secrets.DOCKER_HUB_PAT }} --vnet laserantsvnet --subnet lasersubnet --ip-address Private
