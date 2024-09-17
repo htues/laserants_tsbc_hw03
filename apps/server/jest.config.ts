@@ -19,6 +19,7 @@ const config: Config = {
     "**/?(*.)+(spec|test).[tj]s?(x)"
   ],
   testPathIgnorePatterns: ["/node_modules/"],
+  roots: ["<rootDir>/test"],
 };
 
 export default config;
