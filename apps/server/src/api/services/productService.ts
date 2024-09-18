@@ -3,8 +3,8 @@ import * as productRepository from "../repositories/productRepository";
 
 type CreateUpdateProduct = Omit<Product, "id">;
 
-export const getProducts = async () => {
-  return productRepository.getProducts();
+export const getProducts = async (catId: number) => {
+  return productRepository.getProducts(catId);
 };
 
 export const getProductById = async (id: number) => {

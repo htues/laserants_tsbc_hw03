@@ -3,12 +3,20 @@ import { Product } from '@prisma/client';
 
 type CreateUpdateProduct = Omit<Product, 'id'>;
 
-export const getProducts = async (): Promise<Product[]> => {
-  return prisma.product.findMany({
+export const getProducts = async (categoryId?: number): Promise<Product[]> => {
+  const query: any = {
     include: {
       category: true,
     },
-  });
+  };
+
+  if (categoryId !== undefined && categoryId !== null && categoryId > 0) {
+    query.where = {
+      categoryId: categoryId,
+    };
+  }
+
+  return prisma.product.findMany(query);
 };
 
 export const getProductById = async (id: number): Promise<Product | null> => {

@@ -12,7 +12,7 @@ BEGIN
     IF NOT EXISTS (
         SELECT FROM pg_roles WHERE rolname = '<your user>'
     ) THEN
-        EXECUTE 'CREATE USER laserants WITH PASSWORD ''<your password>''';
+        EXECUTE 'CREATE USER <your user> WITH PASSWORD ''<your password>''';
     END IF;
 END $$;    
 
