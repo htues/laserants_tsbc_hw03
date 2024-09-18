@@ -9,8 +9,8 @@ let server: any;
 
 beforeAll(async () => {
   const backend = await StartBackend();
-  app = backend.app;
-  server = backend.server;
+  //app = backend.app;
+  //server = backend.server;
 });
 
 afterAll((done) => {
