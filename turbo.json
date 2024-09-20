@@ -17,7 +17,8 @@
     "start": {
       "dependsOn": ["build"],
       "cache": false,
-      "persistent": true
+      "persistent": true,
+      "outputs": []
     },
     "e2e:run": {
 
