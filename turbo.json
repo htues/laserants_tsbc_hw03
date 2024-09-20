@@ -18,6 +18,10 @@
       "dependsOn": ["build"],
       "cache": false,
       "persistent": true
-    }
+    },
+    "e2e:run": {
+      "dependsOn": ["build"]
+    },
+    "e2e:report": {}
   }
 }
