@@ -4,7 +4,9 @@
     "lib": ["ES2015"],
     "outDir": "./dist",
     "rootDir": "./src",
-    "types": ["jest"]
+    "types": ["jest"],
+    "module": "ESNext",
+    "moduleResolution": "node",
   },
   "exclude": ["node_modules", "test", "dist"],
   "include": ["src"]
