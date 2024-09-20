@@ -9,7 +9,9 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["jest", "@testing-library/jest-dom"] 
+    "types": ["jest", "@testing-library/jest-dom"],
+    "allowImportingTsExtensions": true,
+    "noEmit": true 
   },
   "include": ["src", "test"]
 }
