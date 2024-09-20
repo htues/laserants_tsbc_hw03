@@ -6,7 +6,7 @@ type CreateUpdateCollection = Omit<Collection, 'id'>;
 export const getCollections = async (): Promise<Collection[]> => {
   return prisma.collection.findMany({
     include: {
-      product: true,
+      variant: true,
     },
   });
 }
@@ -17,7 +17,7 @@ export const getCollectionById = async (id: number): Promise<Collection | null> 
       id,
     },
     include: {
-      product: true,
+      variant: true,
     },
   });
 }
