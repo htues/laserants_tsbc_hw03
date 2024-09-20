@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
+    "target": "es6",
+    "module": "ESNext",
     "lib": ["dom", "es2015"],
     "jsx": "react-jsx",
     "strict": true,
@@ -9,7 +9,7 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["jest", "@testing-library/jest-dom"] // Removed "node"
+    "types": ["jest", "@testing-library/jest-dom"] 
   },
   "include": ["src", "test"]
 }
