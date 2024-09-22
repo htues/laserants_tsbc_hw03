@@ -6,8 +6,8 @@ test('Search products and verify product details', async ({ page }) => {
 
   // 2. Select filters
   await page.selectOption('sidebar/Categories #category-filter', 'electronics');
-  await page.fill('sidebar/Categories #price-min', '100');
-  await page.fill('sidebar/Categories #price-max', '500');
+  await page.fill('sidebar/Categories #price-min', '10');
+  await page.fill('sidebar/Categories #price-max', '50');
   await page.click('sidebar/Categories #apply-filters');
 
   // 3. Click a product from the results
