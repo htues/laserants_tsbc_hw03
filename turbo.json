@@ -17,11 +17,12 @@
     "start": {
       "dependsOn": ["build"],
       "cache": false,
-      "persistent": true,
-      "outputs": []
+      "persistent": true
     },
     "e2e:run": {
-
+      "dependsOn": ["build"],
+      "cache": false,
+      "outputs": []
     },
     "e2e:report": {}
   }
