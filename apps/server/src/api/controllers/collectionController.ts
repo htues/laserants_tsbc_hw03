@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import * as collectionService from '../services/collectionService';
+import * as collectionService from '../services/collectionService.js';
 
 export const getCollections = async (req: Request, res: Response) => {
   try {

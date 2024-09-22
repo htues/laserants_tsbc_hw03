@@ -1,5 +1,5 @@
 import { Category } from '@prisma/client'
-import * as categoryRepository from '../repositories/categoryRepository'
+import * as categoryRepository from '../repositories/categoryRepository.js'
 
 type CreateUpdateCategory = Omit<Category, 'id'>
 

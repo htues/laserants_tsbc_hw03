@@ -1,5 +1,5 @@
 import { Collection } from "@prisma/client";
-import * as collectionRepository from "../repositories/collectionRepository";
+import * as collectionRepository from "../repositories/collectionRepository.js";
 
 type CreateUpdateCollection = Omit<Collection, "id">;
 

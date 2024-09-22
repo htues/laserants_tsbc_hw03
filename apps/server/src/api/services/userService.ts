@@ -1,5 +1,5 @@
 import { User } from '@prisma/client'
-import * as userRepository from '../repositories/userRepository'
+import * as userRepository from '../repositories/userRepository.js'
 
 type CreateUpdateUser = Omit<User, 'id'>
 

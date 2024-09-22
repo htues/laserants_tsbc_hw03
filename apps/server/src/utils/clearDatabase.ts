@@ -1,4 +1,4 @@
-import prisma from '../api/prismaClient'
+import prisma from '../api/prismaClient.js'
 
 async function tableExists(tableName: string): Promise<boolean> {
   const result = await prisma.$queryRaw<{ exists: boolean }[]>`

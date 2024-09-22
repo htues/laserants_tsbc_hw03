@@ -1,4 +1,4 @@
-import prisma from '../prismaClient'
+import prisma from '../prismaClient.js'
 import { Collection } from '@prisma/client'
 
 type CreateUpdateCollection = Omit<Collection, 'id'>;

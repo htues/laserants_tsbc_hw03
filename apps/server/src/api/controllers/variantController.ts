@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import * as variantService from '../services/variantService';
+import * as variantService from '../services/variantService.js';
 
 export const getVariants = async (req: Request, res: Response) => {
   try {

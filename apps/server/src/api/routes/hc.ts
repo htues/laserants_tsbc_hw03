@@ -1,5 +1,5 @@
 import express, { Router } from 'express'
-import hcController from '../controllers/hcController'
+import hcController from '../controllers/hcController.js'
 
 const router: Router = express.Router()
 
