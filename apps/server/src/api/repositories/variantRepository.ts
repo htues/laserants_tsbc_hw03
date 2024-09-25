@@ -1,4 +1,4 @@
-import prisma from "../prismaClient";
+import prisma from "../prismaClient.js";
 import { Variant } from "@prisma/client";
 
 type CreateUpdateVariant = Omit<Variant, "id">;

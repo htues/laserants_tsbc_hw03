@@ -1,5 +1,5 @@
 import { Role } from '@prisma/client'
-import * as roleRepository from '../repositories/roleRepository';
+import * as roleRepository from '../repositories/roleRepository.js';
 
 type CreateUpdateRole = Omit<Role, 'id'>;
 

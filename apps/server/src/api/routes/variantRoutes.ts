@@ -1,5 +1,5 @@
 import { Router } from "express";
-import * as variantController from "../controllers/variantController";
+import * as variantController from "../controllers/variantController.js";
 
 const router: Router = Router();
 

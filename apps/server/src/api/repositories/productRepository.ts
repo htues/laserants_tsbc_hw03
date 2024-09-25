@@ -1,4 +1,4 @@
-import prisma from '../prismaClient';
+import prisma from '../prismaClient.js';
 import { Product } from '@prisma/client';
 
 type CreateUpdateProduct = Omit<Product, 'id'>;

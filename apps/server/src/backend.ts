@@ -1,4 +1,4 @@
-import { StartBackend } from './besetup'
+import { StartBackend } from './besetup.js'
 
 StartBackend()
   .then(() => {

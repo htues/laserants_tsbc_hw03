@@ -1,5 +1,5 @@
 import {Request, Response} from 'express';
-import * as roleService from '../services/roleService';
+import * as roleService from '../services/roleService.js';
 
 export const getRoles = async (req: Request, res: Response) => {
   try {

@@ -1,4 +1,4 @@
-import prisma from '../prismaClient';
+import prisma from '../prismaClient.js';
 import { Role } from '@prisma/client';
 
 type CreateUpdateRole = Omit<Role, 'id'>;

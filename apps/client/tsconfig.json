@@ -1,15 +1,20 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "module": "commonjs",
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "target": "es6",
+    "module": "ESNext",
     "lib": ["dom", "es2015"],
-    "jsx": "react",
+    "jsx": "react-jsx",
     "strict": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "types": ["jest", "@testing-library/jest-dom"] // Removed "node"
+    "types": ["jest", "@testing-library/jest-dom"],
+    "allowImportingTsExtensions": true,
+    "noEmit": true 
   },
-  "include": ["src", "test"]
+  "include": ["src"],
+  "exclude": ["node_modules", "test", "dist"]
 }
