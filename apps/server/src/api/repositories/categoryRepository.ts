@@ -1,4 +1,4 @@
-import prisma from '../prismaClient'
+import prisma from '../prismaClient.js'
 import { Category } from '@prisma/client'
 
 type CreateUpdateCategory = Omit<Category, 'id'>

@@ -1,5 +1,5 @@
 import { Product } from "@prisma/client";
-import * as productRepository from "../repositories/productRepository";
+import * as productRepository from "../repositories/productRepository.js";
 
 type CreateUpdateProduct = Omit<Product, "id">;
 

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { dbConnection } from '../../config/setup'
+import { dbConnection } from '../../config/setup.js'
 
 const hcController = {
   backendHealthCheck: async (req: Request, res: Response) => {

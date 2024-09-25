@@ -1,4 +1,4 @@
-import prisma from '../api/prismaClient'
+import prisma from '../api/prismaClient.js'
 
 const products = [
   {

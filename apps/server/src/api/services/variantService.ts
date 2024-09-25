@@ -1,5 +1,5 @@
 import { Variant } from "@prisma/client";
-import * as variantRepository from "../repositories/variantRepository";
+import * as variantRepository from "../repositories/variantRepository.js";
 
 type CreateUpdateVariant = Omit<Variant, "id">;
 

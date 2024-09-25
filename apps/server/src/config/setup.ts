@@ -1,5 +1,5 @@
-import prisma from '../api/prismaClient'
-import { whitelist_frontend, mode } from './envvars'
+import prisma from '../api/prismaClient.js'
+import { whitelist_frontend, mode } from './envvars.js'
 
 const dbConnection = async () => {
   try {

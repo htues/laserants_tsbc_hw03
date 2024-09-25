@@ -9,6 +9,7 @@
     "lint": {
       "dependsOn": ["^lint"]
     },
+    "test": {},
     "dev": {
       "cache": false,
       "persistent": true
@@ -17,6 +18,12 @@
       "dependsOn": ["build"],
       "cache": false,
       "persistent": true
-    }
+    },
+    "e2e:run": {
+      "dependsOn": ["build"],
+      "cache": false,
+      "outputs": []
+    },
+    "e2e:report": {}
   }
 }

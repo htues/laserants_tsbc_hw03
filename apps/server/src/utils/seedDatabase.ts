@@ -1,9 +1,9 @@
-import {mode, dataseeddev} from '../config/envvars';
-import clearDatabase from './clearDatabase';
-import seedRoles from './seedRoles';
-import seedUsers from './seedUsers';
-import seedCategories from './seedCategories';
-import seedProducts from './seedProducts';
+import {mode, dataseeddev} from '../config/envvars.js';
+import clearDatabase from './clearDatabase.js';
+import seedRoles from './seedRoles.js';
+import seedUsers from './seedUsers.js';
+import seedCategories from './seedCategories.js';
+import seedProducts from './seedProducts.js';
 
 async function seedDatabase() {
     try{

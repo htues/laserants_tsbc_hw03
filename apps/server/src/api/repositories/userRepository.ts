@@ -1,4 +1,4 @@
-import prisma from '../prismaClient'
+import prisma from '../prismaClient.js'
 import { User } from '@prisma/client'
 
 type CreateUpdateUser = Omit<User, 'id' | 'roleId'> & { role?: { connect: { id: number } } };

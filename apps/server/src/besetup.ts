@@ -1,19 +1,19 @@
-import './config/loadEnv'
+import './config/loadEnv.js'
 import express, { Request, Response, NextFunction } from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
-import { dbConnection, setCorsEnviro } from './config/setup'
-import { port, mode } from './config/envvars'
+import { dbConnection, setCorsEnviro } from './config/setup.js'
+import { port, mode } from './config/envvars.js'
 
-import healthCheckRouter from './api/routes/hc'
-import rolesRouter from './api/routes/roleRoutes'
-import usersRouter from './api/routes/userRoutes'
+import healthCheckRouter from './api/routes/hc.js'
+import rolesRouter from './api/routes/roleRoutes.js'
+import usersRouter from './api/routes/userRoutes.js'
 
-import categoriesRouter from './api/routes/categoryRoutes'
-import productsRouter from './api/routes/productRoutes'
-import variantsRouter from './api/routes/variantRoutes'
-import collectionsRouter from './api/routes/collectionRoutes'
-import seedDatabase from './utils/seedDatabase'
+import categoriesRouter from './api/routes/categoryRoutes.js'
+import productsRouter from './api/routes/productRoutes.js'
+import variantsRouter from './api/routes/variantRoutes.js'
+import collectionsRouter from './api/routes/collectionRoutes.js'
+import seedDatabase from './utils/seedDatabase.js'
 
 const backend: express.Application = express()
 
