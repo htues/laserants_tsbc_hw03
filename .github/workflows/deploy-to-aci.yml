@@ -37,6 +37,10 @@ jobs:
       run: |
         az network nsg rule create --resource-group laserantsgroup --nsg-name laserantsnsg --name AllowInternal --priority 100 --direction Inbound --access Allow --protocol Tcp --source-address-prefixes 10.0.0.0/16 --source-port-ranges '*' --destination-address-prefixes 10.0.0.0/16 --destination-port-ranges '*'
 
+    - name: Ensure NSG rules allow Application Gateway traffic
+      run: |
+        az network nsg rule create --resource-group laserantsgroup --nsg-name laserantsnsg --name AllowAppGateway --priority 200 --direction Inbound --access Allow --protocol Tcp --source-address-prefixes Internet --source-port-ranges '*' --destination-address-prefixes '*' --destination-port-ranges 65200-65535
+
     - name: Associate NSG with subnet
       run: |
         az network vnet subnet update --resource-group laserantsgroup --vnet-name laserantsvnet --name lasersubnet --network-security-group laserantsnsg
