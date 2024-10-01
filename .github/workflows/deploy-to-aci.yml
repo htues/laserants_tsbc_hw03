@@ -21,62 +21,26 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Ensure virtual network and subnets exist
-      run: |
-        if ! az network vnet show --resource-group laserantsgroup --name laserantsvnet; then
-          az network vnet create --resource-group laserantsgroup --name laserantsvnet --address-prefix 10.0.0.0/16 --subnet-name lasersubnet --subnet-prefix 10.0.1.0/24
-        fi
-        if ! az network vnet subnet show --resource-group laserantsgroup --vnet-name laserantsvnet --name appGatewaySubnet; then
-          az network vnet subnet create --resource-group laserantsgroup --vnet-name laserantsvnet --name appGatewaySubnet --address-prefix 10.0.2.0/24
-        fi
-
-    - name: Ensure network security group exists
-      run: |
-        if ! az network nsg show --resource-group laserantsgroup --name laserantsnsg; then
-          az network nsg create --resource-group laserantsgroup --name laserantsnsg --location westus
-        fi
-
-    - name: Ensure NSG rules allow internal communication
-      run: |
-        az network nsg rule create --resource-group laserantsgroup --nsg-name laserantsnsg --name AllowInternal --priority 100 --direction Inbound --access Allow --protocol Tcp --source-address-prefixes 10.0.0.0/16 --source-port-ranges '*' --destination-address-prefixes 10.0.0.0/16 --destination-port-ranges '*'
-
-    - name: Ensure NSG rules allow Application Gateway traffic
-      run: |
-        az network nsg rule create --resource-group laserantsgroup --nsg-name laserantsnsg --name AllowAppGateway --priority 200 --direction Inbound --access Allow --protocol Tcp --source-address-prefixes Internet --source-port-ranges '*' --destination-address-prefixes '*' --destination-port-ranges 65200-65535
-
-    - name: Associate NSG with subnet
-      run: |
-        az network vnet subnet update --resource-group laserantsgroup --vnet-name laserantsvnet --name lasersubnet --network-security-group laserantsnsg
-
-    - name: Delete existing ecommerce-monorepo container group
-      run: |
-        if az container show --resource-group laserantsgroup --name ecommerce-monorepo; then
-          az container delete --resource-group laserantsgroup --name ecommerce-monorepo --yes
-        fi
-
-    - name: Delete existing pgecommerce container group
-      run: |
-        if az container show --resource-group laserantsgroup --name pgecommerce; then
-          az container delete --resource-group laserantsgroup --name pgecommerce --yes
-        fi
-
-    - name: Deploy ecommerce_monorepo to ACI
-      run: |
-        az container create \
-          --resource-group laserantsgroup \
-          --name ecommerce-monorepo \
-          --image hftamayo/ecommerce_monorepo:0.0.1 \
-          --cpu 1 \
-          --memory 1 \
-          --ports 5173 8012 \
-          --registry-login-server index.docker.io \
-          --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} \
-          --registry-password ${{ secrets.DOCKER_HUB_PAT }} \
-          --vnet laserantsvnet \
-          --subnet lasersubnet \
-          --ip-address Private \
-          --environment-variables \
-            DATABASE_URL=${{ secrets.DATABASE_URL }}
+    - name: Retrieve secrets from Azure Key Vault
+      id: keyvault
+      uses: azure/keyvault-secrets@v1
+      with:
+        keyvault: laserantskeyvaul
+        secrets: |
+          backendport
+          postgresuser
+          postgrespassword
+          postgresdb
+          postgreshost
+          postgresport
+          execmode
+          seeddevelopment
+          seedproduction
+          frontendorigins
+          postgresdbdevurl
+          databaseurl
+          vitebackendurl
+          viteappname
 
     - name: Deploy pgecommerce to ACI
       run: |
@@ -94,9 +58,44 @@ jobs:
           --subnet lasersubnet \
           --ip-address Private \
           --environment-variables \
-            POSTGRES_DB=${{ secrets.POSTGRES_DB }} \
-            POSTGRES_USER=${{ secrets.POSTGRES_USER }} \
-            POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+            POSTGRES_USER=${{ steps.keyvault.outputs.postgresuser }} \
+            POSTGRES_PASSWORD=${{ steps.keyvault.outputs.postgrespassword }} \
+            POSTGRES_DB=${{ steps.keyvault.outputs.postgresdb }} \
+            POSTGRES_HOST=${{ steps.keyvault.outputs.postgreshost }} \
+            POSTGRES_PORT=${{ steps.keyvault.outputs.postgresport }} \
+            EXEC_MODE=${{ steps.keyvault.outputs.execmode }} \
+            DATABASE_URL=${{ steps.keyvault.outputs.databaseurl }}
+
+    - name: Deploy ecommerce_monorepo to ACI
+      run: |
+        az container create \
+          --resource-group laserantsgroup \
+          --name ecommerce-monorepo \
+          --image hftamayo/ecommerce_monorepo:0.0.1 \
+          --cpu 1 \
+          --memory 1 \
+          --ports 5173 8012 \
+          --registry-login-server index.docker.io \
+          --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} \
+          --registry-password ${{ secrets.DOCKER_HUB_PAT }} \
+          --vnet laserantsvnet \
+          --subnet lasersubnet \
+          --ip-address Private \
+          --environment-variables \
+            BACKEND_PORT=${{ steps.keyvault.outputs.backendport }} \
+            POSTGRES_USER=${{ steps.keyvault.outputs.postgresuser }} \
+            POSTGRES_PASSWORD=${{ steps.keyvault.outputs.postgrespassword }} \
+            POSTGRES_DB=${{ steps.keyvault.outputs.postgresdb }} \
+            POSTGRES_HOST=${{ steps.keyvault.outputs.postgreshost }} \
+            POSTGRES_PORT=${{ steps.keyvault.outputs.postgresport }} \
+            EXEC_MODE=${{ steps.keyvault.outputs.execmode }} \
+            SEED_DEVELOPMENT=${{ steps.keyvault.outputs.seeddevelopment }} \
+            SEED_PRODUCTION=${{ steps.keyvault.outputs.seedproduction }} \
+            FRONTEND_ORIGINS=${{ steps.keyvault.outputs.frontendorigins }} \
+            POSTGRES_DB_DEV_URL=${{ steps.keyvault.outputs.postgresdbdevurl }} \
+            DATABASE_URL=${{ steps.keyvault.outputs.databaseurl }} \
+            VITE_BACKEND_URL=${{ steps.keyvault.outputs.vitebackendurl }} \
+            VITE_APP_NAME=${{ steps.keyvault.outputs.viteappname }}
 
     - name: Create public IP for Application Gateway
       run: |
@@ -119,6 +118,27 @@ jobs:
           --routing-rule-type Basic \
           --priority 1 \
           --servers $(az container show --resource-group laserantsgroup --name ecommerce-monorepo --query ipAddress.ip --output tsv)
+
+    - name: Create custom health probe
+      run: |
+        az network application-gateway probe create \
+          --resource-group laserantsgroup \
+          --gateway-name appGateway \
+          --name customHealthProbe \
+          --protocol Http \
+          --host-name-from-http-settings true \
+          --path / \
+          --interval 30 \
+          --timeout 30 \
+          --unhealthy-threshold 3
+
+    - name: Update HTTP settings with custom health probe
+      run: |
+        az network application-gateway http-settings update \
+          --resource-group laserantsgroup \
+          --gateway-name appGateway \
+          --name appGatewayBackendHttpSettings \
+          --probe customHealthProbe
 
     - name: Get public IP address of Application Gateway
       run: |
