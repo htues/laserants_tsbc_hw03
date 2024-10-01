@@ -110,6 +110,7 @@ jobs:
           --http-settings-port 5173 \
           --http-settings-protocol Http \
           --routing-rule-type Basic \
+          --priority 1 \
           --servers $(az container show --resource-group laserantsgroup --name ecommerce-monorepo --query ipAddress.ip --output tsv)
 
     - name: Get public IP address of Application Gateway
