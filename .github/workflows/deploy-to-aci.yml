@@ -16,21 +16,10 @@ jobs:
     - name: Log in to Docker Hub
       run: echo "${{ secrets.DOCKER_HUB_PAT }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
-    - name: Pull Docker images
-      run: |
-        docker pull hftamayo/ecommerce_monorepo:0.0.1
-        docker pull hftamayo/pgecommerce:0.0.1
-
     - name: Set up Azure CLI
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-    - name: Ensure resource group exists
-      run: |
-        if ! az group exists --name laserantsgroup; then
-          az group create --name laserantsgroup --location westus
-        fi
 
     - name: Ensure virtual network and subnet exist
       run: |
@@ -66,8 +55,38 @@ jobs:
 
     - name: Deploy ecommerce_monorepo to ACI
       run: |
-        az container create --resource-group laserantsgroup --name ecommerce-monorepo --image hftamayo/ecommerce_monorepo:0.0.1 --cpu 1 --memory 1 --ports 5173 8012 --registry-login-server index.docker.io --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} --registry-password ${{ secrets.DOCKER_HUB_PAT }} --vnet laserantsvnet --subnet lasersubnet --ip-address Private
+        az container create \
+          --resource-group laserantsgroup \
+          --name ecommerce-monorepo \
+          --image hftamayo/ecommerce_monorepo:0.0.1 \
+          --cpu 1 \
+          --memory 1 \
+          --ports 5173 8012 \
+          --registry-login-server index.docker.io \
+          --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} \
+          --registry-password ${{ secrets.DOCKER_HUB_PAT }} \
+          --vnet laserantsvnet \
+          --subnet lasersubnet \
+          --ip-address Public \
+          --environment-variables \
+            DATABASE_URL=${{ secrets.DATABASE_URL }}
 
     - name: Deploy pgecommerce to ACI
       run: |
-        az container create --resource-group laserantsgroup --name pgecommerce --image hftamayo/pgecommerce:0.0.1 --cpu 1 --memory 1 --ports 5432 --registry-login-server index.docker.io --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} --registry-password ${{ secrets.DOCKER_HUB_PAT }} --vnet laserantsvnet --subnet lasersubnet --ip-address Private
+        az container create \
+          --resource-group laserantsgroup \
+          --name pgecommerce \
+          --image hftamayo/pgecommerce:0.0.1 \
+          --cpu 1 \
+          --memory 1 \
+          --ports 5432 \
+          --registry-login-server index.docker.io \
+          --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} \
+          --registry-password ${{ secrets.DOCKER_HUB_PAT }} \
+          --vnet laserantsvnet \
+          --subnet lasersubnet \
+          --ip-address Private \
+          --environment-variables \
+            POSTGRES_DB=${{ secrets.POSTGRES_DB }} \
+            POSTGRES_USER=${{ secrets.POSTGRES_USER }} \
+            POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
