@@ -67,7 +67,7 @@ jobs:
           --registry-password ${{ secrets.DOCKER_HUB_PAT }} \
           --vnet laserantsvnet \
           --subnet lasersubnet \
-          --ip-address Public \
+          --ip-address Private \
           --environment-variables \
             DATABASE_URL=${{ secrets.DATABASE_URL }}
 
@@ -90,3 +90,29 @@ jobs:
             POSTGRES_DB=${{ secrets.POSTGRES_DB }} \
             POSTGRES_USER=${{ secrets.POSTGRES_USER }} \
             POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }}
+
+    - name: Create public IP for Application Gateway
+      run: |
+        az network public-ip create --resource-group laserantsgroup --name appGatewayPublicIp --sku Standard --allocation-method Static
+
+    - name: Create Application Gateway
+      run: |
+        az network application-gateway create \
+          --resource-group laserantsgroup \
+          --name appGateway \
+          --location westus \
+          --sku Standard_v2 \
+          --capacity 2 \
+          --vnet-name laserantsvnet \
+          --subnet lasersubnet \
+          --public-ip-address appGatewayPublicIp \
+          --frontend-port 80 \
+          --http-settings-port 5173 \
+          --http-settings-protocol Http \
+          --routing-rule-type Basic \
+          --servers $(az container show --resource-group laserantsgroup --name ecommerce-monorepo --query ipAddress.ip --output tsv)
+
+    - name: Get public IP address of Application Gateway
+      run: |
+        APP_GATEWAY_IP=$(az network public-ip show --resource-group laserantsgroup --name appGatewayPublicIp --query ipAddress --output tsv)
+        echo "ecommerce-monorepo is accessible at http://$APP_GATEWAY_IP"
