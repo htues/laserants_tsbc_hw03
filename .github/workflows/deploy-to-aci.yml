@@ -21,10 +21,13 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Ensure virtual network and subnet exist
+    - name: Ensure virtual network and subnets exist
       run: |
         if ! az network vnet show --resource-group laserantsgroup --name laserantsvnet; then
-          az network vnet create --resource-group laserantsgroup --name laserantsvnet --address-prefix 10.0.0.0/16 --subnet-name lasersubnet --subnet-prefix 10.0.0.0/24
+          az network vnet create --resource-group laserantsgroup --name laserantsvnet --address-prefix 10.0.0.0/16 --subnet-name lasersubnet --subnet-prefix 10.0.1.0/24
+        fi
+        if ! az network vnet subnet show --resource-group laserantsgroup --vnet-name laserantsvnet --name appGatewaySubnet; then
+          az network vnet subnet create --resource-group laserantsgroup --vnet-name laserantsvnet --name appGatewaySubnet --address-prefix 10.0.2.0/24
         fi
 
     - name: Ensure network security group exists
@@ -108,7 +111,7 @@ jobs:
           --sku Standard_v2 \
           --capacity 2 \
           --vnet-name laserantsvnet \
-          --subnet lasersubnet \
+          --subnet appGatewaySubnet \
           --public-ip-address appGatewayPublicIp \
           --frontend-port 80 \
           --http-settings-port 5173 \
