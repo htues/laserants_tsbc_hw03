@@ -23,7 +23,7 @@ jobs:
 
     - name: Retrieve secrets from Azure Key Vault
       id: keyvault
-      uses: azure/keyvault-secrets@v1
+      uses: azure/secrets@v1
       with:
         keyvault: laserantskeyvaul
         secrets: |
