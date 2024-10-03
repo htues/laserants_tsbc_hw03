@@ -38,8 +38,11 @@ jobs:
         VITE_BACKEND_URL=$(az keyvault secret show --name vitebackendurl --vault-name laserantskeyvaul --query value -o tsv)
         VITE_APP_NAME=$(az keyvault secret show --name viteappname --vault-name laserantskeyvaul --query value -o tsv)
 
-        ENV_VARS="BACKEND_PORT=$BACKEND_PORT POSTGRES_USER=$POSTGRES_USER POSTGRES_PASSWORD=$POSTGRES_PASSWORD POSTGRES_DB=$POSTGRES_DB POSTGRES_HOST=$POSTGRES_HOST POSTGRES_PORT=$POSTGRES_PORT EXEC_MODE=$EXEC_MODE SEED_DEVELOPMENT=$SEED_DEVELOPMENT SEED_PRODUCTION=$SEED_PRODUCTION FRONTEND_ORIGINS=$FRONTEND_ORIGINS POSTGRES_DB_DEV_URL=$POSTGRES_DB_DEV_URL DATABASE_URL=$DATABASE_URL VITE_BACKEND_URL=$VITE_BACKEND_URL VITE_APP_NAME=$VITE_APP_NAME"
-        echo "ENV_VARS=$ENV_VARS" >> $GITHUB_ENV        
+        DATALAYER_VARS="POSTGRES_USER=$POSTGRES_USER POSTGRES_PASSWORD=$POSTGRES_PASSWORD POSTGRES_DB=$POSTGRES_DB POSTGRES_HOST=$POSTGRES_HOST POSTGRES_PORT=$POSTGRES_PORT"
+        MONOREPO_VARS="BACKEND_PORT=$BACKEND_PORT EXEC_MODE=$EXEC_MODE SEED_DEVELOPMENT=$SEED_DEVELOPMENT SEED_PRODUCTION=$SEED_PRODUCTION FRONTEND_ORIGINS=$FRONTEND_ORIGINS POSTGRES_DB_DEV_URL=$POSTGRES_DB_DEV_URL DATABASE_URL=$DATABASE_URL VITE_BACKEND_URL=$VITE_BACKEND_URL VITE_APP_NAME=$VITE_APP_NAME"
+
+        echo "DATALAYER_VARS=$DATALAYER_VARS"
+        echo "MONOREPO_VARS=$MONOREPO_VARS"
 
     - name: Check and delete existing pgecommerce container
       run: |
@@ -62,7 +65,7 @@ jobs:
           --vnet laserantsvnet \
           --subnet lasersubnet \
           --ip-address Private \
-          --environment-variables ${{ env.ENV_VARS }}
+          --environment-variables ${{ env.DATALAYER_VARS }}
 
     - name: Check and delete existing ecommerce-monorepo container
       run: |
@@ -85,7 +88,7 @@ jobs:
           --vnet laserantsvnet \
           --subnet lasersubnet \
           --ip-address Private \
-          --environment-variables ${{ env.ENV_VARS }}
+          --environment-variables ${{ env.MONOREPO_VARS }}
 
     - name: Create public IP for Application Gateway
       run: |
