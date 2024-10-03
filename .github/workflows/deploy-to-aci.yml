@@ -112,24 +112,25 @@ jobs:
           --priority 1 \
           --servers $(az container show --resource-group laserantsgroup --name ecommerce-monorepo --query ipAddress.ip --output tsv)
 
-    - name: Create custom health probe
-      run: |
-        az network application-gateway probe create \
-          --resource-group laserantsgroup \
-          --gateway-name appGateway \
-          --name customHealthProbe \
-          --protocol Http \
-          --path / \
-          --interval 30 \
-          --timeout 30 \
+    # - name: Create custom health probe
+    #   run: |
+    #     az network application-gateway probe create \
+    #       --resource-group laserantsgroup \
+    #       --gateway-name appGateway \
+    #       --name customHealthProbe \
+    #       --protocol Http \
+    #       --path / \
+    #       --interval 30 \
+    #       --timeout 30 \
+    #       --host "your backend host"
 
-    - name: Update HTTP settings with custom health probe
-      run: |
-        az network application-gateway http-settings update \
-          --resource-group laserantsgroup \
-          --gateway-name appGateway \
-          --name appGatewayBackendHttpSettings \
-          --probe customHealthProbe
+    # - name: Update HTTP settings with custom health probe
+    #   run: |
+    #     az network application-gateway http-settings update \
+    #       --resource-group laserantsgroup \
+    #       --gateway-name appGateway \
+    #       --name appGatewayBackendHttpSettings \
+    #       --probe customHealthProbe
 
     - name: Get public IP address of Application Gateway
       run: |
