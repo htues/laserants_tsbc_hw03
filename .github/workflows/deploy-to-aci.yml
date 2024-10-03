@@ -21,27 +21,6 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Retrieve secrets from Azure Key Vault and create JSON file
-      run: |
-        BACKEND_PORT=$(az keyvault secret show --name backendport --vault-name laserantskeyvaul --query value -o tsv)
-        POSTGRES_USER=$(az keyvault secret show --name postgresuser --vault-name laserantskeyvaul --query value -o tsv)
-        POSTGRES_PASSWORD=$(az keyvault secret show --name postgrespassword --vault-name laserantskeyvaul --query value -o tsv)
-        POSTGRES_DB=$(az keyvault secret show --name postgresdb --vault-name laserantskeyvaul --query value -o tsv)
-        POSTGRES_HOST=$(az keyvault secret show --name postgreshost --vault-name laserantskeyvaul --query value -o tsv)
-        POSTGRES_PORT=$(az keyvault secret show --name postgresport --vault-name laserantskeyvaul --query value -o tsv)
-        EXEC_MODE=$(az keyvault secret show --name execmode --vault-name laserantskeyvaul --query value -o tsv)
-        SEED_DEVELOPMENT=$(az keyvault secret show --name seeddevelopment --vault-name laserantskeyvaul --query value -o tsv)
-        SEED_PRODUCTION=$(az keyvault secret show --name seedproduction --vault-name laserantskeyvaul --query value -o tsv)
-        FRONTEND_ORIGINS=$(az keyvault secret show --name frontendorigins --vault-name laserantskeyvaul --query value -o tsv)
-        VITE_BACKEND_URL=$(az keyvault secret show --name vitebackendurl --vault-name laserantskeyvaul --query value -o tsv)
-        VITE_APP_NAME=$(az keyvault secret show --name viteappname --vault-name laserantskeyvaul --query value -o tsv)
-
-        DATALAYER_VARS="POSTGRES_USER=$POSTGRES_USER POSTGRES_PASSWORD=$POSTGRES_PASSWORD POSTGRES_DB=$POSTGRES_DB POSTGRES_HOST=$POSTGRES_HOST POSTGRES_PORT=$POSTGRES_PORT"
-        MONOREPO_VARS="BACKEND_PORT=\"$BACKEND_PORT\" EXEC_MODE=\"$EXEC_MODE\" SEED_DEVELOPMENT=\"$SEED_DEVELOPMENT\" SEED_PRODUCTION=\"$SEED_PRODUCTION\" FRONTEND_ORIGINS=\"$FRONTEND_ORIGINS\" VITE_BACKEND_URL=\"$VITE_BACKEND_URL\" VITE_APP_NAME=\"$VITE_APP_NAME\""
-
-        echo "DATALAYER_VARS=$DATALAYER_VARS" >> $GITHUB_ENV
-        echo "MONOREPO_VARS=$MONOREPO_VARS" >> $GITHUB_ENV
-
     - name: Check and delete existing pgecommerce container
       run: |
         if az container show --resource-group laserantsgroup --name pgecommerce &>/dev/null; then
@@ -62,21 +41,13 @@ jobs:
           --registry-password ${{ secrets.DOCKER_HUB_PAT }} \
           --vnet laserantsvnet \
           --subnet lasersubnet \
-          --ip-address Private \
-          --environment-variables ${{ env.DATALAYER_VARS }}
+          --ip-address Private
 
     - name: Retrieve IP address of pgecommerce
       id: get_pgecommerce_ip
       run: |
         PGE_COMMERCE_IP=$(az container show --resource-group laserantsgroup --name pgecommerce --query ipAddress.ip --output tsv)
         echo "PGE_COMMERCE_IP=$PGE_COMMERCE_IP" >> $GITHUB_ENV
-
-    - name: Construct and concatenate connection strings into MONOREPO_VARS
-      run: |
-        POSTGRES_DB_DEV_URL="postgresql://laserants:laserants@${{ env.PGE_COMMERCE_IP }}:5432/ecomdev"
-        DATABASE_URL="postgresql://laserants:laserants@${{ env.PGE_COMMERCE_IP }}:5432/ecomdev"
-        echo "POSTGRES_DB_DEV_URL=$POSTGRES_DB_DEV_URL" >> $GITHUB_ENV
-        echo "DATABASE_URL=$DATABASE_URL" >> $GITHUB_ENV
 
     - name: Check and delete existing ecommerce-monorepo container
       run: |
@@ -99,7 +70,7 @@ jobs:
           --vnet laserantsvnet \
           --subnet lasersubnet \
           --ip-address Private \
-          --environment-variables ${{ env.MONOREPO_VARS }} POSTGRES_DB_DEV_URL=${{ env.POSTGRES_DB_DEV_URL }} DATABASE_URL=${{ env.DATABASE_URL }}
+          --environment-variables POSTGRES_HOST=${{ env.PGE_COMMERCE_IP }
 
     - name: Create public IP for Application Gateway
       run: |
@@ -122,26 +93,6 @@ jobs:
           --routing-rule-type Basic \
           --priority 1 \
           --servers $(az container show --resource-group laserantsgroup --name ecommerce-monorepo --query ipAddress.ip --output tsv)
-
-    # - name: Create custom health probe
-    #   run: |
-    #     az network application-gateway probe create \
-    #       --resource-group laserantsgroup \
-    #       --gateway-name appGateway \
-    #       --name customHealthProbe \
-    #       --protocol Http \
-    #       --path / \
-    #       --interval 30 \
-    #       --timeout 30 \
-    #       --host "your backend host"
-
-    # - name: Update HTTP settings with custom health probe
-    #   run: |
-    #     az network application-gateway http-settings update \
-    #       --resource-group laserantsgroup \
-    #       --gateway-name appGateway \
-    #       --name appGatewayBackendHttpSettings \
-    #       --probe customHealthProbe
 
     - name: Get public IP address of Application Gateway
       run: |
