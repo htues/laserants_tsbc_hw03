@@ -75,8 +75,8 @@ jobs:
       run: |
         POSTGRES_DB_DEV_URL="postgresql://laserants:laserants@${{ env.PGE_COMMERCE_IP }}:5432/ecomdev"
         DATABASE_URL="postgresql://laserants:laserants@${{ env.PGE_COMMERCE_IP }}:5432/ecomdev"
-        MONOREPO_VARS="${{ env.MONOREPO_VARS }} POSTGRES_DB_DEV_URL=\"$POSTGRES_DB_DEV_URL\" DATABASE_URL=\"$DATABASE_URL\""
-        echo "MONOREPO_VARS=$MONOREPO_VARS" >> $GITHUB_ENV
+        echo "POSTGRES_DB_DEV_URL=$POSTGRES_DB_DEV_URL" >> $GITHUB_ENV
+        echo "DATABASE_URL=$DATABASE_URL" >> $GITHUB_ENV
 
     - name: Check and delete existing ecommerce-monorepo container
       run: |
@@ -99,7 +99,7 @@ jobs:
           --vnet laserantsvnet \
           --subnet lasersubnet \
           --ip-address Private \
-          --environment-variables ${{ env.MONOREPO_VARS }}
+          --environment-variables ${{ env.MONOREPO_VARS }} POSTGRES_DB_DEV_URL=${{ env.POSTGRES_DB_DEV_URL }} DATABASE_URL=${{ env.DATABASE_URL }}
 
     - name: Create public IP for Application Gateway
       run: |
