@@ -67,7 +67,13 @@ jobs:
           --vnet laserantsvnet \
           --subnet lasersubnet \
           --ip-address Private \
-          --environment-variables 'POSTGRES_USER=$POSTGRES_USER POSTGRES_PASSWORD=$POSTGRES_PASSWORD POSTGRES_DB=$POSTGRES_DB POSTGRES_HOST=$POSTGRES_HOST POSTGRES_PORT=$POSTGRES_PORT EXEC_MODE=$EXEC_MODE DATABASE_URL=$DATABASE_URL'
+          --environment-variables POSTGRES_USER=$POSTGRES_USER \
+          --environment-variables POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
+          --environment-variables POSTGRES_DB=$POSTGRES_DB \
+          --environment-variables POSTGRES_HOST=$POSTGRES_HOST \
+          --environment-variables POSTGRES_PORT=$POSTGRES_PORT \
+          --environment-variables EXEC_MODE=$EXEC_MODE \
+          --environment-variables DATABASE_URL=$DATABASE_URL
 
     - name: Deploy ecommerce_monorepo to ACI
       run: |
@@ -84,7 +90,20 @@ jobs:
           --vnet laserantsvnet \
           --subnet lasersubnet \
           --ip-address Private \
-          --environment-variables 'BACKEND_PORT=$BACKEND_PORT POSTGRES_USER=$POSTGRES_USER POSTGRES_PASSWORD=$POSTGRES_PASSWORD POSTGRES_DB=$POSTGRES_DB POSTGRES_HOST=$POSTGRES_HOST POSTGRES_PORT=$POSTGRES_PORT EXEC_MODE=$EXEC_MODE SEED_DEVELOPMENT=$SEED_DEVELOPMENT SEED_PRODUCTION=$SEED_PRODUCTION FRONTEND_ORIGINS=$FRONTEND_ORIGINS POSTGRES_DB_DEV_URL=$POSTGRES_DB_DEV_URL DATABASE_URL=$DATABASE_URL VITE_BACKEND_URL=$VITE_BACKEND_URL VITE_APP_NAME=$VITE_APP_NAME'
+          --environment-variables BACKEND_PORT=$BACKEND_PORT \
+          --environment-variables POSTGRES_USER=$POSTGRES_USER \
+          --environment-variables POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
+          --environment-variables POSTGRES_DB=$POSTGRES_DB \
+          --environment-variables POSTGRES_HOST=$POSTGRES_HOST \
+          --environment-variables POSTGRES_PORT=$POSTGRES_PORT \
+          --environment-variables EXEC_MODE=$EXEC_MODE \
+          --environment-variables SEED_DEVELOPMENT=$SEED_DEVELOPMENT \
+          --environment-variables SEED_PRODUCTION=$SEED_PRODUCTION \
+          --environment-variables FRONTEND_ORIGINS=$FRONTEND_ORIGINS \
+          --environment-variables POSTGRES_DB_DEV_URL=$POSTGRES_DB_DEV_URL \
+          --environment-variables DATABASE_URL=$DATABASE_URL \
+          --environment-variables VITE_BACKEND_URL=$VITE_BACKEND_URL \
+          --environment-variables VITE_APP_NAME=$VITE_APP_NAME
 
     - name: Create public IP for Application Gateway
       run: |
