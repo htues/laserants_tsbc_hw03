@@ -3,7 +3,7 @@ name: Deploy to ACI
 on:
   push:
     branches:
-      - unstable
+      - main
 
 jobs:
   deploy:
@@ -22,49 +22,35 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Retrieve secrets from Azure Key Vault
-      id: keyvault
-      uses: Azure/get-keyvault-secrets@v1
-      with:
-        keyvault: laserantskeyvaul
-        secrets: |
-          backendport
-          postgresuser
-          postgrespassword
-          postgresdb
-          postgreshost
-          postgresport
-          execmode
-          seeddevelopment
-          seedproduction
-          frontendorigins
-          postgresdbdevurl
-          databaseurl
-          vitebackendurl
-          viteappname
-
-    - name: Deploy pgecommerce to ACI
       run: |
-        az container create \
-          --resource-group laserantsgroup \
-          --name pgecommerce \
-          --image hftamayo/pgecommerce:0.0.1 \
-          --cpu 1 \
-          --memory 1 \
-          --ports 5432 \
-          --registry-login-server index.docker.io \
-          --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} \
-          --registry-password ${{ secrets.DOCKER_HUB_PAT }} \
-          --vnet laserantsvnet \
-          --subnet lasersubnet \
-          --ip-address Private \
-          --environment-variables \
-            POSTGRES_USER=${{ steps.keyvault.outputs.postgresuser }} \
-            POSTGRES_PASSWORD=${{ steps.keyvault.outputs.postgrespassword }} \
-            POSTGRES_DB=${{ steps.keyvault.outputs.postgresdb }} \
-            POSTGRES_HOST=${{ steps.keyvault.outputs.postgreshost }} \
-            POSTGRES_PORT=${{ steps.keyvault.outputs.postgresport }} \
-            EXEC_MODE=${{ steps.keyvault.outputs.execmode }} \
-            DATABASE_URL=${{ steps.keyvault.outputs.databaseurl }}
+        BACKEND_PORT=$(az keyvault secret show --name backendport --vault-name laserantskeyvaul --query value -o tsv)
+        POSTGRES_USER=$(az keyvault secret show --name postgresuser --vault-name laserantskeyvaul --query value -o tsv)
+        POSTGRES_PASSWORD=$(az keyvault secret show --name postgrespassword --vault-name laserantskeyvaul --query value -o tsv)
+        POSTGRES_DB=$(az keyvault secret show --name postgresdb --vault-name laserantskeyvaul --query value -o tsv)
+        POSTGRES_HOST=$(az keyvault secret show --name postgreshost --vault-name laserantskeyvaul --query value -o tsv)
+        POSTGRES_PORT=$(az keyvault secret show --name postgresport --vault-name laserantskeyvaul --query value -o tsv)
+        EXEC_MODE=$(az keyvault secret show --name execmode --vault-name laserantskeyvaul --query value -o tsv)
+        SEED_DEVELOPMENT=$(az keyvault secret show --name seeddevelopment --vault-name laserantskeyvaul --query value -o tsv)
+        SEED_PRODUCTION=$(az keyvault secret show --name seedproduction --vault-name laserantskeyvaul --query value -o tsv)
+        FRONTEND_ORIGINS=$(az keyvault secret show --name frontendorigins --vault-name laserantskeyvaul --query value -o tsv)
+        POSTGRES_DB_DEV_URL=$(az keyvault secret show --name postgresdbdevurl --vault-name laserantskeyvaul --query value -o tsv)
+        DATABASE_URL=$(az keyvault secret show --name databaseurl --vault-name laserantskeyvaul --query value -o tsv)
+        VITE_BACKEND_URL=$(az keyvault secret show --name vitebackendurl --vault-name laserantskeyvaul --query value -o tsv)
+        VITE_APP_NAME=$(az keyvault secret show --name viteappname --vault-name laserantskeyvaul --query value -o tsv)
+        echo "BACKEND_PORT=$BACKEND_PORT" >> $GITHUB_ENV
+        echo "POSTGRES_USER=$POSTGRES_USER" >> $GITHUB_ENV
+        echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD" >> $GITHUB_ENV
+        echo "POSTGRES_DB=$POSTGRES_DB" >> $GITHUB_ENV
+        echo "POSTGRES_HOST=$POSTGRES_HOST" >> $GITHUB_ENV
+        echo "POSTGRES_PORT=$POSTGRES_PORT" >> $GITHUB_ENV
+        echo "EXEC_MODE=$EXEC_MODE" >> $GITHUB_ENV
+        echo "SEED_DEVELOPMENT=$SEED_DEVELOPMENT" >> $GITHUB_ENV
+        echo "SEED_PRODUCTION=$SEED_PRODUCTION" >> $GITHUB_ENV
+        echo "FRONTEND_ORIGINS=$FRONTEND_ORIGINS" >> $GITHUB_ENV
+        echo "POSTGRES_DB_DEV_URL=$POSTGRES_DB_DEV_URL" >> $GITHUB_ENV
+        echo "DATABASE_URL=$DATABASE_URL" >> $GITHUB_ENV
+        echo "VITE_BACKEND_URL=$VITE_BACKEND_URL" >> $GITHUB_ENV
+        echo "VITE_APP_NAME=$VITE_APP_NAME" >> $GITHUB_ENV
 
     - name: Deploy ecommerce_monorepo to ACI
       run: |
@@ -82,20 +68,44 @@ jobs:
           --subnet lasersubnet \
           --ip-address Private \
           --environment-variables \
-            BACKEND_PORT=${{ steps.keyvault.outputs.backendport }} \
-            POSTGRES_USER=${{ steps.keyvault.outputs.postgresuser }} \
-            POSTGRES_PASSWORD=${{ steps.keyvault.outputs.postgrespassword }} \
-            POSTGRES_DB=${{ steps.keyvault.outputs.postgresdb }} \
-            POSTGRES_HOST=${{ steps.keyvault.outputs.postgreshost }} \
-            POSTGRES_PORT=${{ steps.keyvault.outputs.postgresport }} \
-            EXEC_MODE=${{ steps.keyvault.outputs.execmode }} \
-            SEED_DEVELOPMENT=${{ steps.keyvault.outputs.seeddevelopment }} \
-            SEED_PRODUCTION=${{ steps.keyvault.outputs.seedproduction }} \
-            FRONTEND_ORIGINS=${{ steps.keyvault.outputs.frontendorigins }} \
-            POSTGRES_DB_DEV_URL=${{ steps.keyvault.outputs.postgresdbdevurl }} \
-            DATABASE_URL=${{ steps.keyvault.outputs.databaseurl }} \
-            VITE_BACKEND_URL=${{ steps.keyvault.outputs.vitebackendurl }} \
-            VITE_APP_NAME=${{ steps.keyvault.outputs.viteappname }}
+            BACKEND_PORT=$BACKEND_PORT \
+            POSTGRES_USER=$POSTGRES_USER \
+            POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
+            POSTGRES_DB=$POSTGRES_DB \
+            POSTGRES_HOST=$POSTGRES_HOST \
+            POSTGRES_PORT=$POSTGRES_PORT \
+            EXEC_MODE=$EXEC_MODE \
+            SEED_DEVELOPMENT=$SEED_DEVELOPMENT \
+            SEED_PRODUCTION=$SEED_PRODUCTION \
+            FRONTEND_ORIGINS=$FRONTEND_ORIGINS \
+            POSTGRES_DB_DEV_URL=$POSTGRES_DB_DEV_URL \
+            DATABASE_URL=$DATABASE_URL \
+            VITE_BACKEND_URL=$VITE_BACKEND_URL \
+            VITE_APP_NAME=$VITE_APP_NAME
+
+    - name: Deploy pgecommerce to ACI
+      run: |
+        az container create \
+          --resource-group laserantsgroup \
+          --name pgecommerce \
+          --image hftamayo/pgecommerce:0.0.1 \
+          --cpu 1 \
+          --memory 1 \
+          --ports 5432 \
+          --registry-login-server index.docker.io \
+          --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} \
+          --registry-password ${{ secrets.DOCKER_HUB_PAT }} \
+          --vnet laserantsvnet \
+          --subnet lasersubnet \
+          --ip-address Private \
+          --environment-variables \
+            POSTGRES_USER=$POSTGRES_USER \
+            POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
+            POSTGRES_DB=$POSTGRES_DB \
+            POSTGRES_HOST=$POSTGRES_HOST \
+            POSTGRES_PORT=$POSTGRES_PORT \
+            EXEC_MODE=$EXEC_MODE \
+            DATABASE_URL=$DATABASE_URL
 
     - name: Create public IP for Application Gateway
       run: |
