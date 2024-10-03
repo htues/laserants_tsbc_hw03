@@ -52,6 +52,12 @@ jobs:
         echo "VITE_BACKEND_URL=$VITE_BACKEND_URL" >> $GITHUB_ENV
         echo "VITE_APP_NAME=$VITE_APP_NAME" >> $GITHUB_ENV
 
+    - name: Check and delete existing pgecommerce container
+      run: |
+        if az container show --resource-group laserantsgroup --name pgecommerce &>/dev/null; then
+          az container delete --resource-group laserantsgroup --name pgecommerce --yes
+        fi
+
     - name: Deploy pgecommerce to ACI
       run: |
         az container create \
@@ -74,6 +80,12 @@ jobs:
           --environment-variables POSTGRES_PORT=$POSTGRES_PORT \
           --environment-variables EXEC_MODE=$EXEC_MODE \
           --environment-variables DATABASE_URL=$DATABASE_URL
+
+    - name: Check and delete existing ecommerce-monorepo container
+      run: |
+        if az container show --resource-group laserantsgroup --name ecommerce-monorepo &>/dev/null; then
+          az container delete --resource-group laserantsgroup --name ecommerce-monorepo --yes
+        fi
 
     - name: Deploy ecommerce_monorepo to ACI
       run: |
