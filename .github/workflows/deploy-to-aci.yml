@@ -119,7 +119,6 @@ jobs:
           --gateway-name appGateway \
           --name customHealthProbe \
           --protocol Http \
-          --host-name-from-http-settings true \
           --path / \
           --interval 30 \
           --timeout 30 \
