@@ -33,8 +33,6 @@ jobs:
         SEED_DEVELOPMENT=$(az keyvault secret show --name seeddevelopment --vault-name laserantskeyvaul --query value -o tsv)
         SEED_PRODUCTION=$(az keyvault secret show --name seedproduction --vault-name laserantskeyvaul --query value -o tsv)
         FRONTEND_ORIGINS=$(az keyvault secret show --name frontendorigins --vault-name laserantskeyvaul --query value -o tsv)
-        POSTGRES_DB_DEV_URL=$(az keyvault secret show --name postgresdbdevurl --vault-name laserantskeyvaul --query value -o tsv)
-        DATABASE_URL=$(az keyvault secret show --name databaseurl --vault-name laserantskeyvaul --query value -o tsv)
         VITE_BACKEND_URL=$(az keyvault secret show --name vitebackendurl --vault-name laserantskeyvaul --query value -o tsv)
         VITE_APP_NAME=$(az keyvault secret show --name viteappname --vault-name laserantskeyvaul --query value -o tsv)
 
@@ -66,6 +64,20 @@ jobs:
           --subnet lasersubnet \
           --ip-address Private \
           --environment-variables ${{ env.DATALAYER_VARS }}
+
+    - name: Retrieve IP address of pgecommerce
+      id: get_pgecommerce_ip
+      run: |
+        PGE_COMMERCE_IP=$(az container show --resource-group laserantsgroup --name pgecommerce --query ipAddress.ip --output tsv)
+        echo "PGE_COMMERCE_IP=$PGE_COMMERCE_IP" >> $GITHUB_ENV
+
+    - name: Construct and concatenate connection strings into MONOREPO_VARS
+      run: |
+        POSTGRES_DB_DEV_URL="postgresql://laserants:laserants@${{ env.PGE_COMMERCE_IP }}:5432/ecomdev"
+        DATABASE_URL="postgresql://laserants:laserants@${{ env.PGE_COMMERCE_IP }}:5432/ecomdev"
+        MONOREPO_VARS="${{ env.MONOREPO_VARS }} POSTGRES_DB_DEV_URL=$POSTGRES_DB_DEV_URL DATABASE_URL=$DATABASE_URL"
+        echo "MONOREPO_VARS=$MONOREPO_VARS" >> $GITHUB_ENV
+
 
     - name: Check and delete existing ecommerce-monorepo container
       run: |
