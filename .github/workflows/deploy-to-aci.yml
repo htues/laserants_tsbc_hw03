@@ -3,7 +3,7 @@ name: Deploy to ACI
 on:
   push:
     branches:
-      - main
+      - unstable
 
 jobs:
   deploy:
