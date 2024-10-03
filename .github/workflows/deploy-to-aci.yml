@@ -21,7 +21,7 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Retrieve secrets from Azure Key Vault using Azure CLI
+    - name: Retrieve secrets from Azure Key Vault and create JSON file
       run: |
         BACKEND_PORT=$(az keyvault secret show --name backendport --vault-name laserantskeyvaul --query value -o tsv)
         POSTGRES_USER=$(az keyvault secret show --name postgresuser --vault-name laserantskeyvaul --query value -o tsv)
@@ -37,20 +37,25 @@ jobs:
         DATABASE_URL=$(az keyvault secret show --name databaseurl --vault-name laserantskeyvaul --query value -o tsv)
         VITE_BACKEND_URL=$(az keyvault secret show --name vitebackendurl --vault-name laserantskeyvaul --query value -o tsv)
         VITE_APP_NAME=$(az keyvault secret show --name viteappname --vault-name laserantskeyvaul --query value -o tsv)
-        echo "BACKEND_PORT=$BACKEND_PORT" >> $GITHUB_ENV
-        echo "POSTGRES_USER=$POSTGRES_USER" >> $GITHUB_ENV
-        echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD" >> $GITHUB_ENV
-        echo "POSTGRES_DB=$POSTGRES_DB" >> $GITHUB_ENV
-        echo "POSTGRES_HOST=$POSTGRES_HOST" >> $GITHUB_ENV
-        echo "POSTGRES_PORT=$POSTGRES_PORT" >> $GITHUB_ENV
-        echo "EXEC_MODE=$EXEC_MODE" >> $GITHUB_ENV
-        echo "SEED_DEVELOPMENT=$SEED_DEVELOPMENT" >> $GITHUB_ENV
-        echo "SEED_PRODUCTION=$SEED_PRODUCTION" >> $GITHUB_ENV
-        echo "FRONTEND_ORIGINS=$FRONTEND_ORIGINS" >> $GITHUB_ENV
-        echo "POSTGRES_DB_DEV_URL=$POSTGRES_DB_DEV_URL" >> $GITHUB_ENV
-        echo "DATABASE_URL=$DATABASE_URL" >> $GITHUB_ENV
-        echo "VITE_BACKEND_URL=$VITE_BACKEND_URL" >> $GITHUB_ENV
-        echo "VITE_APP_NAME=$VITE_APP_NAME" >> $GITHUB_ENV
+
+        cat <<EOF > env_vars.json
+        {
+          "BACKEND_PORT": "$BACKEND_PORT",
+          "POSTGRES_USER": "$POSTGRES_USER",
+          "POSTGRES_PASSWORD": "$POSTGRES_PASSWORD",
+          "POSTGRES_DB": "$POSTGRES_DB",
+          "POSTGRES_HOST": "$POSTGRES_HOST",
+          "POSTGRES_PORT": "$POSTGRES_PORT",
+          "EXEC_MODE": "$EXEC_MODE",
+          "SEED_DEVELOPMENT": "$SEED_DEVELOPMENT",
+          "SEED_PRODUCTION": "$SEED_PRODUCTION",
+          "FRONTEND_ORIGINS": "$FRONTEND_ORIGINS",
+          "POSTGRES_DB_DEV_URL": "$POSTGRES_DB_DEV_URL",
+          "DATABASE_URL": "$DATABASE_URL",
+          "VITE_BACKEND_URL": "$VITE_BACKEND_URL",
+          "VITE_APP_NAME": "$VITE_APP_NAME"
+        }
+        EOF
 
     - name: Check and delete existing pgecommerce container
       run: |
@@ -73,13 +78,7 @@ jobs:
           --vnet laserantsvnet \
           --subnet lasersubnet \
           --ip-address Private \
-          --environment-variables POSTGRES_USER=$POSTGRES_USER \
-          --environment-variables POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
-          --environment-variables POSTGRES_DB=$POSTGRES_DB \
-          --environment-variables POSTGRES_HOST=$POSTGRES_HOST \
-          --environment-variables POSTGRES_PORT=$POSTGRES_PORT \
-          --environment-variables EXEC_MODE=$EXEC_MODE \
-          --environment-variables DATABASE_URL=$DATABASE_URL
+          --environment-variables @env_vars.json
 
     - name: Check and delete existing ecommerce-monorepo container
       run: |
@@ -102,20 +101,7 @@ jobs:
           --vnet laserantsvnet \
           --subnet lasersubnet \
           --ip-address Private \
-          --environment-variables BACKEND_PORT=$BACKEND_PORT \
-          --environment-variables POSTGRES_USER=$POSTGRES_USER \
-          --environment-variables POSTGRES_PASSWORD=$POSTGRES_PASSWORD \
-          --environment-variables POSTGRES_DB=$POSTGRES_DB \
-          --environment-variables POSTGRES_HOST=$POSTGRES_HOST \
-          --environment-variables POSTGRES_PORT=$POSTGRES_PORT \
-          --environment-variables EXEC_MODE=$EXEC_MODE \
-          --environment-variables SEED_DEVELOPMENT=$SEED_DEVELOPMENT \
-          --environment-variables SEED_PRODUCTION=$SEED_PRODUCTION \
-          --environment-variables FRONTEND_ORIGINS=$FRONTEND_ORIGINS \
-          --environment-variables POSTGRES_DB_DEV_URL=$POSTGRES_DB_DEV_URL \
-          --environment-variables DATABASE_URL=$DATABASE_URL \
-          --environment-variables VITE_BACKEND_URL=$VITE_BACKEND_URL \
-          --environment-variables VITE_APP_NAME=$VITE_APP_NAME
+          --environment-variables @env_vars.json
 
     - name: Create public IP for Application Gateway
       run: |
