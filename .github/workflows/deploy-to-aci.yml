@@ -75,9 +75,8 @@ jobs:
       run: |
         POSTGRES_DB_DEV_URL="postgresql://laserants:laserants@${{ env.PGE_COMMERCE_IP }}:5432/ecomdev"
         DATABASE_URL="postgresql://laserants:laserants@${{ env.PGE_COMMERCE_IP }}:5432/ecomdev"
-        MONOREPO_VARS="${{ env.MONOREPO_VARS }} POSTGRES_DB_DEV_URL=$POSTGRES_DB_DEV_URL DATABASE_URL=$DATABASE_URL"
+        MONOREPO_VARS="${{ env.MONOREPO_VARS }} POSTGRES_DB_DEV_URL=\"$POSTGRES_DB_DEV_URL\" DATABASE_URL=\"$DATABASE_URL\""
         echo "MONOREPO_VARS=$MONOREPO_VARS" >> $GITHUB_ENV
-
 
     - name: Check and delete existing ecommerce-monorepo container
       run: |
