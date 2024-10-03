@@ -123,7 +123,6 @@ jobs:
           --path / \
           --interval 30 \
           --timeout 30 \
-          --unhealthy-threshold 3
 
     - name: Update HTTP settings with custom health probe
       run: |
