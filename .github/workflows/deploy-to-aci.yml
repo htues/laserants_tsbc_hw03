@@ -21,6 +21,55 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    - name: Create Virtual Network if not exists
+      run: |
+        if ! az network vnet show --resource-group laserantsgroup --name laserantsvnet &>/dev/null; then
+          az network vnet create \
+            --resource-group laserantsgroup \
+            --name laserantsvnet \
+            --address-prefix 10.0.0.0/16
+        fi
+
+    - name: Create Subnet for Application Gateway if not exists
+      run: |
+        if ! az network vnet subnet show --resource-group laserantsgroup --vnet-name laserantsvnet --name appGatewaySubnet &>/dev/null; then
+          az network vnet subnet create \
+            --resource-group laserantsgroup \
+            --vnet-name laserantsvnet \
+            --name appGatewaySubnet \
+            --address-prefix 10.0.1.0/24
+        fi
+
+    - name: Create Public IP for Application Gateway if not exists
+      run: |
+        if ! az network public-ip show --resource-group laserantsgroup --name appGatewayPublicIp &>/dev/null; then
+          az network public-ip create \
+            --resource-group laserantsgroup \
+            --name appGatewayPublicIp \
+            --sku Standard \
+            --allocation-method Static
+        fi
+
+    - name: Create Application Gateway if not exists
+      run: |
+        if ! az network application-gateway show --resource-group laserantsgroup --name appGateway &>/dev/null; then
+          az network application-gateway create \
+            --resource-group laserantsgroup \
+            --name appGateway \
+            --location westus \
+            --sku Standard_v2 \
+            --capacity 2 \
+            --vnet-name laserantsvnet \
+            --subnet appGatewaySubnet \
+            --public-ip-address appGatewayPublicIp \
+            --frontend-port 80 \
+            --http-settings-port 5173 \
+            --http-settings-protocol Http \
+            --routing-rule-type Basic \
+            --priority 1 \
+            --servers $(az container show --resource-group laserantsgroup --name ecommerce-monorepo --query ipAddress.ip --output tsv)
+        fi
+
     - name: Check and delete existing pgecommerce container
       run: |
         if az container show --resource-group laserantsgroup --name pgecommerce &>/dev/null; then
@@ -40,7 +89,7 @@ jobs:
           --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} \
           --registry-password ${{ secrets.DOCKER_HUB_PAT }} \
           --vnet laserantsvnet \
-          --subnet lasersubnet \
+          --subnet appGatewaySubnet \
           --ip-address Private
 
     - name: Retrieve IP address of pgecommerce
@@ -68,31 +117,9 @@ jobs:
           --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} \
           --registry-password ${{ secrets.DOCKER_HUB_PAT }} \
           --vnet laserantsvnet \
-          --subnet lasersubnet \
+          --subnet appGatewaySubnet \
           --ip-address Private \
           --environment-variables POSTGRES_HOST=${{ env.PGE_COMMERCE_IP }}
-
-    - name: Create public IP for Application Gateway
-      run: |
-        az network public-ip create --resource-group laserantsgroup --name appGatewayPublicIp --sku Standard --allocation-method Static
-
-    - name: Create Application Gateway
-      run: |
-        az network application-gateway create \
-          --resource-group laserantsgroup \
-          --name appGateway \
-          --location westus \
-          --sku Standard_v2 \
-          --capacity 2 \
-          --vnet-name laserantsvnet \
-          --subnet appGatewaySubnet \
-          --public-ip-address appGatewayPublicIp \
-          --frontend-port 80 \
-          --http-settings-port 5173 \
-          --http-settings-protocol Http \
-          --routing-rule-type Basic \
-          --priority 1 \
-          --servers $(az container show --resource-group laserantsgroup --name ecommerce-monorepo --query ipAddress.ip --output tsv)
 
     - name: Get public IP address of Application Gateway
       run: |
