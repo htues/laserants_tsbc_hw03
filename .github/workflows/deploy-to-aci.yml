@@ -37,7 +37,17 @@ jobs:
             --resource-group laserantsgroup \
             --vnet-name laserantsvnet \
             --name appGatewaySubnet \
-            --address-prefix 10.0.1.0/24 \
+            --address-prefix 10.0.1.0/24
+        fi
+
+    - name: Create Subnet for Containers if not exists
+      run: |
+        if ! az network vnet subnet show --resource-group laserantsgroup --vnet-name laserantsvnet --name containerSubnet &>/dev/null; then
+          az network vnet subnet create \
+            --resource-group laserantsgroup \
+            --vnet-name laserantsvnet \
+            --name containerSubnet \
+            --address-prefix 10.0.2.0/24 \
             --delegations Microsoft.ContainerInstance/containerGroups
         fi
 
@@ -90,7 +100,7 @@ jobs:
           --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} \
           --registry-password ${{ secrets.DOCKER_HUB_PAT }} \
           --vnet laserantsvnet \
-          --subnet appGatewaySubnet \
+          --subnet containerSubnet \
           --ip-address Private
 
     - name: Retrieve IP address of pgecommerce
@@ -118,7 +128,7 @@ jobs:
           --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} \
           --registry-password ${{ secrets.DOCKER_HUB_PAT }} \
           --vnet laserantsvnet \
-          --subnet appGatewaySubnet \
+          --subnet containerSubnet \
           --ip-address Private \
           --environment-variables POSTGRES_HOST=${{ env.PGE_COMMERCE_IP }}
 
