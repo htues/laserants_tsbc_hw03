@@ -37,7 +37,8 @@ jobs:
             --resource-group laserantsgroup \
             --vnet-name laserantsvnet \
             --name appGatewaySubnet \
-            --address-prefix 10.0.1.0/24
+            --address-prefix 10.0.1.0/24 \
+            --delegations Microsoft.ContainerInstance/containerGroups
         fi
 
     - name: Create Public IP for Application Gateway if not exists
