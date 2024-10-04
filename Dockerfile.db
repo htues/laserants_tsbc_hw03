@@ -4,7 +4,7 @@ RUN apk add --no-cache bash
 
 WORKDIR /docker-entrypoint-initdb.d
 
-COPY ../.env .env
+COPY .env .env
 
 COPY db.sql .
 
