@@ -70,7 +70,7 @@ jobs:
           --vnet laserantsvnet \
           --subnet lasersubnet \
           --ip-address Private \
-          --environment-variables POSTGRES_HOST=${{ env.PGE_COMMERCE_IP }
+          --environment-variables POSTGRES_HOST=${{ env.PGE_COMMERCE_IP }}
 
     - name: Create public IP for Application Gateway
       run: |
