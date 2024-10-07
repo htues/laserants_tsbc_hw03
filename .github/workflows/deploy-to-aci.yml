@@ -61,26 +61,6 @@ jobs:
             --allocation-method Static
         fi
 
-    - name: Create Application Gateway if not exists
-      run: |
-        if ! az network application-gateway show --resource-group laserantsgroup --name appGateway &>/dev/null; then
-          az network application-gateway create \
-            --resource-group laserantsgroup \
-            --name appGateway \
-            --location westus \
-            --sku Standard_v2 \
-            --capacity 2 \
-            --vnet-name laserantsvnet \
-            --subnet appGatewaySubnet \
-            --public-ip-address appGatewayPublicIp \
-            --frontend-port 80 \
-            --http-settings-port 5173 \
-            --http-settings-protocol Http \
-            --routing-rule-type Basic \
-            --priority 1 \
-            --servers $(az container show --resource-group laserantsgroup --name ecommerce-monorepo --query ipAddress.ip --output tsv)
-        fi
-
     - name: Check and delete existing pgecommerce container
       run: |
         if az container show --resource-group laserantsgroup --name pgecommerce &>/dev/null; then
@@ -126,6 +106,26 @@ jobs:
           --subnet containerSubnet \
           --ip-address Private \
           --private-ip-address 10.0.2.5
+
+    - name: Create Application Gateway if not exists
+      run: |
+        if ! az network application-gateway show --resource-group laserantsgroup --name appGateway &>/dev/null; then
+          az network application-gateway create \
+            --resource-group laserantsgroup \
+            --name appGateway \
+            --location westus \
+            --sku Standard_v2 \
+            --capacity 2 \
+            --vnet-name laserantsvnet \
+            --subnet appGatewaySubnet \
+            --public-ip-address appGatewayPublicIp \
+            --frontend-port 80 \
+            --http-settings-port 5173 \
+            --http-settings-protocol Http \
+            --routing-rule-type Basic \
+            --priority 1 \
+            --servers 10.0.2.5
+        fi
 
     - name: Get public IP address of Application Gateway
       run: |
