@@ -81,7 +81,8 @@ jobs:
           --registry-password ${{ secrets.DOCKER_HUB_PAT }} \
           --vnet laserantsvnet \
           --subnet containerSubnet \
-          --ip-address Private
+          --ip-address Private \
+          --environment-variables POSTGRES_USER=${{ secrets.POSTGRES_USER }} POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} POSTGRES_DB=${{ secrets.POSTGRES_DB }} POSTGRES_HOST=${{ secrets.POSTGRES_HOST }} POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}
 
     - name: Get pgecommerce IP address
       id: get_pgecommerce_ip
