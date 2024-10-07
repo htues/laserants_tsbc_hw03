@@ -81,8 +81,13 @@ jobs:
           --registry-password ${{ secrets.DOCKER_HUB_PAT }} \
           --vnet laserantsvnet \
           --subnet containerSubnet \
-          --ip-address Private \
-          --private-ip-address 10.0.2.4
+          --ip-address Private
+
+    - name: Get pgecommerce IP address
+      id: get_pgecommerce_ip
+      run: |
+        PGE_COMMERCE_IP=$(az container show --resource-group laserantsgroup --name pgecommerce --query ipAddress.ip --output tsv)
+        echo "PGE_COMMERCE_IP=$PGE_COMMERCE_IP" >> $GITHUB_ENV
 
     - name: Check and delete existing ecommerce-monorepo container
       run: |
@@ -105,7 +110,7 @@ jobs:
           --vnet laserantsvnet \
           --subnet containerSubnet \
           --ip-address Private \
-          --private-ip-address 10.0.2.5
+          --environment-variables POSTGRES_HOST=${{ env.PGE_COMMERCE_IP }}
 
     - name: Create Application Gateway if not exists
       run: |
@@ -124,7 +129,7 @@ jobs:
             --http-settings-protocol Http \
             --routing-rule-type Basic \
             --priority 1 \
-            --servers 10.0.2.5
+            --servers $(az container show --resource-group laserantsgroup --name ecommerce-monorepo --query ipAddress.ip --output tsv)
         fi
 
     - name: Get public IP address of Application Gateway
