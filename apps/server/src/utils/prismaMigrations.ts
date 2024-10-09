@@ -4,6 +4,12 @@ function runMigrations(): Promise<string> {
   return new Promise((resolve, reject) => {
     exec(
       'npx prisma migrate deploy',
+      {
+        env: {
+          ...process.env,
+          DATABASE_URL: process.env.DATABASE_URL,
+        },
+      },
       (
         error: Error | null,
         stdout: string | Buffer,
