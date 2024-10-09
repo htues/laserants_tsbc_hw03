@@ -25,11 +25,11 @@ const getEnvVar = (key: string, defaultValue: string = ''): string => {
 const POSTGRES_USER = getEnvVar('POSTGRES_USER')
 const POSTGRES_PASSWORD = getEnvVar('POSTGRES_PASSWORD')
 const POSTGRES_DB = getEnvVar('POSTGRES_DB')
-const POSTGRES_HOST = getEnvVar('POSTGRES_HOST')
+const DATALAYER_NAME = getEnvVar('DATALAYER_NAME')
 const POSTGRES_PORT = getEnvVar('POSTGRES_PORT')
 
 // Manually construct the DATABASE_URL
-const DATABASE_URL = `postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}`
+const DATABASE_URL = `postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${DATALAYER_NAME}:${POSTGRES_PORT}/${POSTGRES_DB}`
 process.env.DATABASE_URL = DATABASE_URL
 
 const port = parseInt(process.env.BACKEND_PORT ?? '8003')
