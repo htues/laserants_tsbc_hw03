@@ -1,6 +1,5 @@
 import { mode, dataseeddev } from '../config/envvars.js'
 import clearDatabase from './clearDatabase.js'
-import runMigrations from './prismaMigrations.js'
 import seedRoles from './seedRoles.js'
 import seedUsers from './seedUsers.js'
 import seedCategories from './seedCategories.js'
@@ -10,8 +9,6 @@ async function seedDatabase() {
   try {
     if (dataseeddev) {
       await clearDatabase()
-      console.log('Running migrations')
-      await runMigrations()
       console.log(`Seeding database in ${mode} mode`)
       await seedRoles()
       await seedUsers()

@@ -13,6 +13,7 @@ import categoriesRouter from './api/routes/categoryRoutes.js'
 import productsRouter from './api/routes/productRoutes.js'
 import variantsRouter from './api/routes/variantRoutes.js'
 import collectionsRouter from './api/routes/collectionRoutes.js'
+import runMigrations from './utils/prismaMigrations.js'
 import seedDatabase from './utils/seedDatabase.js'
 
 const backend: express.Application = express()
@@ -33,7 +34,9 @@ async function StartBackend() {
       console.log(`Request headers: ${JSON.stringify(req.headers)}`)
       next()
     })
-
+    console.log('Migrations stage')
+    await runMigrations()
+    console.log('Data seeding stage')
     await seedDatabase()
 
     backend.use('/health', healthCheckRouter)
