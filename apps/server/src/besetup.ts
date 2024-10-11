@@ -20,7 +20,7 @@ const backend: express.Application = express()
 
 const PORT = port || 5001
 
-async function StartBackend() {
+async function startBackend() {
   try {
     await dbConnection()
     backend.use(cors(setCorsEnviro))
@@ -36,8 +36,10 @@ async function StartBackend() {
     })
     console.log('Migrations stage')
     await runMigrations()
+    console.log('Migrations completed')
     console.log('Data seeding stage')
     await seedDatabase()
+    console.log('Data seeding completed')
 
     backend.use('/health', healthCheckRouter)
     backend.use('/roles', rolesRouter)
@@ -73,4 +75,4 @@ process.on(
   },
 )
 
-export { backend, StartBackend }
+export { backend, startBackend }
