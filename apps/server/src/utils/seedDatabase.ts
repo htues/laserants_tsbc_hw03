@@ -1,4 +1,4 @@
-import { mode, dataseeddev } from '../config/envvars.js'
+import { mode, dataseeddev, data_structure } from '../config/envvars.js'
 import clearDatabase from './clearDatabase.js'
 import seedRoles from './seedRoles.js'
 import seedUsers from './seedUsers.js'
@@ -8,7 +8,9 @@ import seedProducts from './seedProducts.js'
 async function seedDatabase() {
   try {
     if (dataseeddev) {
-      await clearDatabase()
+      if (data_structure === 'restart') {
+        await clearDatabase()
+      }
       console.log(`Seeding database in ${mode} mode`)
       await seedRoles()
       await seedUsers()

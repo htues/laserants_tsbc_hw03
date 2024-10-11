@@ -1,3 +1,4 @@
+import { data_structure } from '../config/envvars.js'
 import { exec } from 'child_process'
 
 function execCommand(command: string): Promise<void> {
@@ -24,9 +25,7 @@ function execCommand(command: string): Promise<void> {
 
 async function runMigrations(): Promise<void> {
   try {
-    const dataStructure = process.env.DATA_STRUCTURE
-
-    if (dataStructure === 'fresh') {
+    if (data_structure === 'fresh') {
       console.log('Running prisma migrate reset for fresh install...')
       await execCommand('npx prisma migrate reset --force --skip-seed')
     }
