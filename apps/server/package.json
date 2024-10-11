@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch ./src/backend.ts",
+    "dev": "tsx watch --ignore node_modules ./src/backend.ts",
     "build": "tsc",
     "start": "node ./dist/backend.js",
     "lint": "eslint .",
