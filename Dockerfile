@@ -18,6 +18,11 @@ RUN pnpm install
 EXPOSE 8012
 EXPOSE 5173
 
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
+
 CMD ["pnpm", "run", "dev"]
 
 #to run this file:
