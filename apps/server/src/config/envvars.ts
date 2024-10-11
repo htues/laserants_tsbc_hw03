@@ -45,6 +45,7 @@ const cors_samesite = mode === 'production' ? 'none' : 'lax'
 
 const dataseeddev = process.env.SEED_DEVELOPMENT
 const dataseedprod = process.env.SEED_PRODUCTION
+const data_structure = process.env.DATA_STRUCTURE
 
 export {
   port,
@@ -54,4 +55,5 @@ export {
   cors_samesite,
   dataseeddev,
   dataseedprod,
+  data_structure,
 }
