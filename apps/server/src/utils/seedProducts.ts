@@ -1,4 +1,5 @@
 import prisma from '../api/prismaClient.js'
+import { isTableExists, resetIdSequences } from './dbUtils.js'
 
 const products = [
   {
@@ -18,8 +19,7 @@ const products = [
     categoryId: 1,
     price: 14.99,
     status: true,
-    imageUrl:
-      'https://m.media-amazon.com/images/I/71zS41vyMQL._AC_SL1500_.jpg',
+    imageUrl: 'https://m.media-amazon.com/images/I/71zS41vyMQL._AC_SL1500_.jpg',
   },
   {
     id: 3,
@@ -83,31 +83,14 @@ const products = [
   },
 ]
 
-async function sequenceExists(sequenceName: string): Promise<boolean> {
-  const result = await prisma.$queryRaw<{ exists: boolean }[]>`
-    SELECT EXISTS (
-      SELECT FROM information_schema.sequences 
-      WHERE sequence_schema = 'public' 
-      AND sequence_name = ${sequenceName}
-    );
-  `;
-  return result[0].exists;
-}
-
-async function resetIdSequences() {
-  const sequenceName = 'Role_id_seq';
-  const exists = await sequenceExists(sequenceName);
-  if (exists) {
-      await prisma.$executeRaw`ALTER SEQUENCE "User_id_seq" RESTART WITH 1`;
-  } else {
-    console.log(`Sequence "${sequenceName}" does not exist, skipping reset`);
-  }
-}
-
-
 async function seedProducts() {
   try {
-    await resetIdSequences()
+    const isTablePresent = await isTableExists('Role')
+    if (!isTablePresent) {
+      console.log('Table "Role" does not exist, skipping seeding')
+      return
+    }
+    await resetIdSequences('Product_id_seq')
     for (const product of products) {
       await prisma.product.upsert({
         where: { name: product.name },
