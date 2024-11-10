@@ -3,8 +3,8 @@ import prisma from '../api/prismaClient.js'
 export async function clearDatabase() {
   try {
     console.log('Clearing database...')
-    await prisma.$executeRaw`TRUNCATE "Role" CASCADE`
-    await prisma.$executeRaw`TRUNCATE "User" CASCADE`
+    await prisma.$executeRawUnsafe(`TRUNCATE "Role" CASCADE`)
+    await prisma.$executeRawUnsafe(`TRUNCATE "User" CASCADE`)
     console.log('Database cleared successfully')
   } catch (error: unknown) {
     console.error('Failed to clear database', error)
@@ -38,7 +38,9 @@ export async function sequenceExists(sequenceName: string): Promise<boolean> {
 export async function resetIdSequences(sequenceName: string) {
   const exists = await sequenceExists(sequenceName)
   if (exists) {
-    await prisma.$executeRaw`ALTER SEQUENCE ${sequenceName} RESTART WITH 1`
+    await prisma.$executeRawUnsafe(
+      `ALTER SEQUENCE "${sequenceName}" RESTART WITH 1`,
+    )
   } else {
     console.log(`Sequence "${sequenceName}" does not exist, skipping reset`)
   }
