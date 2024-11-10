@@ -3,7 +3,7 @@ import express, { Request, Response, NextFunction } from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import { dbConnection, setCorsEnviro } from './config/setup.js'
-import { port, mode } from './config/envvars.js'
+import { port, mode, dataseeddev } from './config/envvars.js'
 
 import healthCheckRouter from './api/routes/hc.js'
 import rolesRouter from './api/routes/roleRoutes.js'
@@ -33,9 +33,13 @@ async function startBackend() {
       console.log(`Request headers: ${JSON.stringify(req.headers)}`)
       next()
     })
-    console.log('Data seeding stage')
-    await seedDatabase()
-    console.log('Data seeding completed')
+    if (dataseeddev) {
+      console.log('Data seeding stage')
+      await seedDatabase()
+      console.log('Data seeding completed')
+    } else {
+      console.log('Data seeding not required')
+    }
 
     backend.use('/health', healthCheckRouter)
     backend.use('/roles', rolesRouter)
