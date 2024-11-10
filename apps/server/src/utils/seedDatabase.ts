@@ -4,7 +4,7 @@ import seedRoles from './seedRoles.js'
 import seedUsers from './seedUsers.js'
 import seedCategories from './seedCategories.js'
 import seedProducts from './seedProducts.js'
-import { isTableExists, clearDatabase } from './dbUtils.js'
+import { isTableExists, clearDatabase, dbDisconnect } from './dbUtils.js'
 
 async function seedDatabase() {
   try {
@@ -38,6 +38,8 @@ async function seedDatabase() {
     }
   } catch (error: unknown) {
     console.error('Error seeding database', error)
+  } finally {
+    await dbDisconnect()
   }
 }
 
