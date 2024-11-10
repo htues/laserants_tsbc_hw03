@@ -45,3 +45,7 @@ export async function resetIdSequences(sequenceName: string) {
     console.log(`Sequence "${sequenceName}" does not exist, skipping reset`)
   }
 }
+
+export async function dbDisconnect() {
+  await prisma.$disconnect()
+}
