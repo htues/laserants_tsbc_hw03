@@ -33,7 +33,7 @@ async function startBackend() {
       console.log(`Request headers: ${JSON.stringify(req.headers)}`)
       next()
     })
-    if (dataseeddev) {
+    if (dataseeddev === 'true') {
       console.log('Data seeding stage')
       await seedDatabase()
       console.log('Data seeding completed')
