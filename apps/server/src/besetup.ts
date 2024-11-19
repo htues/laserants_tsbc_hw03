@@ -21,7 +21,9 @@ const PORT = port || 5001
 
 async function startBackend() {
   try {
+    console.log('stage 1: starting db connection')
     await dbConnection()
+    console.log('stage 1 completed: Database connection established')
     backend.use(cors(setCorsEnviro))
     backend.use(express.json())
     backend.use(express.urlencoded({ extended: true }))
@@ -34,11 +36,11 @@ async function startBackend() {
       next()
     })
     if (dataseeddev === 'true') {
-      console.log('Data seeding stage')
+      console.log('stage 2: Data seeding phase')
       await seedDatabase()
-      console.log('Data seeding completed')
+      console.log('stage 2 finished: Data seeding completed')
     } else {
-      console.log('Data seeding not required')
+      console.log('stage 2 finished: Data seeding not required')
     }
 
     backend.use('/health', healthCheckRouter)
