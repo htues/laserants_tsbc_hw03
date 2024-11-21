@@ -6,7 +6,7 @@ const dbConnection = async () => {
     await prisma.$connect()
     console.log(`Database connected in ${mode} mode`)
   } catch (error) {
-    console.log('Database connection error: ' + (error as Error).message)
+    console.log('dbConnection method error: ' + (error as Error).message)
     process.exit(1)
   }
 }
