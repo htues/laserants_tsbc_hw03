@@ -1,0 +1,34 @@
+name: Deploy to Kubernetes
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Kubernetes
+        uses: azure/setup-kubectl@v1
+        with:
+          version: 'latest'
+
+      - name: Create Kubernetes Secret
+        run: |
+          kubectl create secret generic db-secret \
+            --from-literal=DATABASE_URL=${{ secrets.DATABASE_URL }} \
+            --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Apply Migration Job
+        run: kubectl apply -f migration-job.yaml
+
+      - name: Wait for Migration Job to Complete
+        run: kubectl wait --for=condition=complete job/db-migration-job
+
+      - name: Apply Kubernetes Deployment
+        run: kubectl apply -f deployment.yaml
