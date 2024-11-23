@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: data-seeding-job
+spec:
+  template:
+    spec:
+      containers:
+        - name: data-seeder
+          image: hftamayo/ecommerce_monorepo:0.0.1
+          command: ["sh", "-c", "node /app/src/utils/seedDatabase.js"]
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: db-secret
+                  key: DATABASE_URL
+      restartPolicy: OnFailure

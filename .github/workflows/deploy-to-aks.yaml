@@ -3,7 +3,7 @@ name: Deploy to Kubernetes
 on:
   push:
     branches:
-      - main
+      - unstable
 
 jobs:
   deploy:
@@ -29,6 +29,12 @@ jobs:
 
       - name: Wait for Migration Job to Complete
         run: kubectl wait --for=condition=complete job/db-migration-job
+
+      - name: Apply Data Seeding Job
+        run: kubectl apply -f data-seeding-job.yaml
+
+      - name: Wait for Data Seeding Job to Complete
+        run: kubectl wait --for=condition=complete job/data-seeding-job
 
       - name: Apply Kubernetes Deployment
         run: kubectl apply -f deployment.yaml
