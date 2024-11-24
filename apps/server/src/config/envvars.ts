@@ -43,6 +43,7 @@ const whitelist_frontend = (process.env.FRONTEND_ORIGINS ?? '').split(',')
 const cors_secure = mode === 'production'
 const cors_samesite = mode === 'production' ? 'none' : 'lax'
 
+const databaseUrl = process.env.DATABASE_URL
 const dataseeddev = process.env.SEED_DEVELOPMENT
 const dataseedprod = process.env.SEED_PRODUCTION
 const data_structure = process.env.DATA_STRUCTURE
@@ -56,4 +57,5 @@ export {
   dataseeddev,
   dataseedprod,
   data_structure,
+  databaseUrl,
 }
