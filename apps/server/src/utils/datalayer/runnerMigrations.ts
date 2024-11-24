@@ -1,4 +1,4 @@
-import { databaseUrl } from '../../config/envvars'
+import { databaseUrl } from '../../config/envvars.js'
 import { exec } from 'child_process'
 
 function execCommand(command: string): Promise<void> {

@@ -1,4 +1,4 @@
-import prisma from '../api/prismaClient.js'
+import prisma from '../../api/prismaClient.js'
 
 export async function clearDatabase() {
   try {
