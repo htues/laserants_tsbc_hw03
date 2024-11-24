@@ -3,6 +3,9 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
+    "migrate": "npx prisma migrate deploy && npx prisma generate",
+    "seed": "node src/utils/seedDatabase.js",
+    "setup": "pnpm install && pnpm migrate && pnpm seed",
     "dev": "turbo dev",
     "lint": "turbo lint",
     "start": "turbo start",
