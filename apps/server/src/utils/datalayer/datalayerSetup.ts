@@ -1,7 +1,7 @@
 import '../../config/loadEnv.js'
 import seedDatabase from '../seedDatabase.js'
 
-async function seedSetup() {
+async function datalayerSetup() {
   try {
     console.log('Seeding database')
     await seedDatabase()
@@ -13,4 +13,4 @@ async function seedSetup() {
   process.exit(0)
 }
 
-seedSetup()
+datalayerSetup()
