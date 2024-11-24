@@ -13,7 +13,7 @@ import categoriesRouter from './api/routes/categoryRoutes.js'
 import productsRouter from './api/routes/productRoutes.js'
 import variantsRouter from './api/routes/variantRoutes.js'
 import collectionsRouter from './api/routes/collectionRoutes.js'
-import seedDatabase from './utils/seedDatabase.js'
+import seedDatabase from './utils/datalayer/seedDatabase.js'
 
 const backend: express.Application = express()
 
