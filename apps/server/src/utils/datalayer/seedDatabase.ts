@@ -1,9 +1,9 @@
-import { mode, dataseeddev, data_structure } from '../config/envvars.js'
+import { mode, dataseeddev, data_structure } from '../../config/envvars.js'
 import runMigrations from './runnerMigrations.js'
-import seedRoles from './datalayer/seeders/seedRoles.js'
-import seedUsers from './datalayer/seeders/seedUsers.js'
-import seedCategories from './datalayer/seeders/seedCategories.js'
-import seedProducts from './datalayer/seeders/seedProducts.js'
+import seedRoles from './seeders/seedRoles.js'
+import seedUsers from './seeders/seedUsers.js'
+import seedCategories from './seeders/seedCategories.js'
+import seedProducts from './seeders/seedProducts.js'
 import { isTableExists, clearDatabase, dbDisconnect } from './dbUtils.js'
 
 async function seedDatabase() {

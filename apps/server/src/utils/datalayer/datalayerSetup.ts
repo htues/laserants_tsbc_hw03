@@ -1,5 +1,5 @@
 import '../../config/loadEnv.js'
-import seedDatabase from '../seedDatabase.js'
+import seedDatabase from './seedDatabase.js'
 
 async function datalayerSetup() {
   try {

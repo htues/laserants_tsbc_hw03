@@ -1,3 +1,4 @@
+import { databaseUrl } from '../../config/envvars'
 import { exec } from 'child_process'
 
 function execCommand(command: string): Promise<void> {
@@ -7,7 +8,7 @@ function execCommand(command: string): Promise<void> {
       {
         env: {
           ...process.env,
-          DATABASE_URL: process.env.DATABASE_URL,
+          DATABASE_URL: databaseUrl,
         },
       },
       (error, stdout, stderr) => {
