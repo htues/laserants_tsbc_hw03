@@ -6,9 +6,7 @@
   "scripts": {
     "dev": "tsx watch --ignore node_modules ./src/backend.ts",
     "build": "tsc",
-    "migrate": "npx prisma migrate deploy && npx prisma generate",
-    "seed": "node src/utils/seedDatabase.js",
-    "setup": "pnpm install && pnpm migrate && pnpm seed",    
+    "setup": "node ./src/utils/datalayer/datalayerSetup.js",    
     "start": "node ./dist/backend.js",
     "lint": "eslint .",
     "test": "jest"
