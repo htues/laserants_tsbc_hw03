@@ -1,4 +1,4 @@
-import { mode, data_structure } from '../config/envvars.js'
+import { mode, dataseeddev, data_structure } from '../config/envvars.js'
 import runMigrations from './runnerMigrations.js'
 import seedRoles from './seedRoles.js'
 import seedUsers from './seedUsers.js'
@@ -19,8 +19,12 @@ async function seedDatabase() {
       !categoryTableExists ||
       !productTableExists
     ) {
-      console.log('Tables do not exist, running migrations')
-      await runMigrations()
+      console.log('Tables do not exist, you must to run migrations')
+      if (mode !== 'production' && dataseeddev === 'true') {
+        await runMigrations()
+      } else {
+        console.log('skipping migrations')
+      }
     }
 
     if (data_structure === 'restart') {
