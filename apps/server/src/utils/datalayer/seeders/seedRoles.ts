@@ -1,5 +1,5 @@
-import prisma from '../api/prismaClient.js'
-import { isTableExists, resetIdSequences } from './dbUtils.js'
+import prisma from '../../../api/prismaClient.js'
+import { isTableExists, resetIdSequences } from '../dbUtils.js'
 
 const roles = [
   {
