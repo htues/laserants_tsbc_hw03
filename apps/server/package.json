@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsx watch --ignore node_modules ./src/backend.ts",
     "build": "tsc",
-    "setup": "node ./src/utils/datalayer/datalayerSetup.js",    
+    "setup": "npm run build && node dist/utils/datalayer/datalayerSetup.js",    
     "start": "node ./dist/backend.js",
     "lint": "eslint .",
     "test": "jest"
