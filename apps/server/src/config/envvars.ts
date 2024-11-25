@@ -30,7 +30,7 @@ const POSTGRES_PORT = getEnvVar('POSTGRES_PORT')
 const DATABASE_URL = `postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${DATALAYER_NAME}:${POSTGRES_PORT}/${POSTGRES_DB}`
 process.env.DATABASE_URL = DATABASE_URL
 
-console.log(`Constructed DATABASE_URL: ${DATABASE_URL}`)
+//console.log(`Constructed DATABASE_URL: ${DATABASE_URL}`)
 
 const port = parseInt(process.env.BACKEND_PORT ?? '8003')
 if (isNaN(port)) {
