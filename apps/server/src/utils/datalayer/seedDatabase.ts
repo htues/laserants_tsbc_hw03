@@ -20,7 +20,11 @@ async function seedDatabase() {
       !productTableExists
     ) {
       console.log('Tables do not exist, you must to run migrations')
-      return
+      if (mode !== 'production' && dataseeddev === 'true') {
+        await runMigrations()
+      } else {
+        console.log('skipping migrations')
+      }
     }
 
     console.log(`Seeding database in ${mode} mode`)
