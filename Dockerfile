@@ -31,5 +31,5 @@ CMD ["pnpm", "run", "dev"]
 # if I'm using a monorepo please refer to this:
 #docker network create ecommerce_network
 #docker network ls
-#docker build -t hftamayo/ecommerce_monorepo:0.0.1 .
+#docker build --no-cache -t hftamayo/ecommerce_monorepo:0.0.1 .
 #docker run --name ecomonorepo --network ecommerce_network -p 8012:8012 -p 5173:5173 -d --env-file .env hftamayo/ecommerce_monorepo:0.0.1
