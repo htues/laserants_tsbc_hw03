@@ -24,7 +24,7 @@ const setCorsEnviro = {
       callback(new Error(`CORS requested from origin: ${origin} denied`), false)
     }
   },
-  credentials: true,
+  //credentials: true,
   optionsSuccessStatus: 200,
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
   allowedHeaders: [
@@ -34,15 +34,9 @@ const setCorsEnviro = {
     'Access-Control-Allow-Methods',
     'Access-Control-Allow-Credentials',
     'Origin',
-    'withCredentials',
     'X-Requested-With',
-    'Content-Type',
     'Accept',
     'Authorization',
-    'X-HTTP-Method-Override',
-    'Set-Cookie',
-    'Cookie',
-    'Request',
   ],
 }
 
