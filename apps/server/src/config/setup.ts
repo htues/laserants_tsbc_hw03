@@ -21,6 +21,7 @@ const setCorsEnviro = {
       console.log(`CORS requested from origin: ${origin} granted`)
       callback(null, true)
     } else {
+      console.log(`CORS requested from origin: ${origin} denied`)
       callback(new Error(`CORS requested from origin: ${origin} denied`), false)
     }
   },
