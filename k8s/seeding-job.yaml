@@ -8,7 +8,7 @@ spec:
       containers:
         - name: ecomonorepo-seeder
           image: hftamayo/ecommerce_monorepo:0.1.1
-          command: ["sh", "-c", "node /app/src/utils/seedDatabase.js"]
+          command: ["sh", "-c", "cd apps/server && npm run setup"]
           env:
             - name: DATABASE_URL
               valueFrom:
