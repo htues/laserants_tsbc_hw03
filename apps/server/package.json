@@ -8,6 +8,7 @@
     "build": "tsc",
     "migrate": "sh scripts/migrate.sh",
     "setup": "npm run build && node dist/utils/datalayer/datalayerSetup.js",
+    "postinstall": "npx prisma generate",
     "start": "node ./dist/backend.js",
     "lint": "eslint .",
     "test": "jest"
