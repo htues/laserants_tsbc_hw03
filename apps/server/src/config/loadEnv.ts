@@ -15,12 +15,13 @@ if (result.error) {
   console.error('Error loading .env file:', result.error)
 } else {
   console.log('.env file loaded successfully')
-  /*
-  console.log('Environment variables:')
-  console.log(`POSTGRES_USER: ${process.env.POSTGRES_USER}`)
-  console.log(`POSTGRES_PASSWORD: ${process.env.POSTGRES_PASSWORD}`)
-  console.log(`POSTGRES_DB: ${process.env.POSTGRES_DB}`)
-  console.log(`POSTGRES_HOST: ${process.env.POSTGRES_HOST}`)
-  console.log(`POSTGRES_PORT: ${process.env.POSTGRES_PORT}`)
-  */
+
+  // console.log('Environment variables:')
+  // console.log(`POSTGRES_USER: ${process.env.POSTGRES_USER}`)
+  // console.log(`POSTGRES_PASSWORD: ${process.env.POSTGRES_PASSWORD}`)
+  // console.log(`POSTGRES_DB: ${process.env.POSTGRES_DB}`)
+  // console.log(`POSTGRES_HOST: ${process.env.POSTGRES_HOST}`)
+  // console.log(`POSTGRES_PORT: ${process.env.POSTGRES_PORT}`)
+  // console.log(`DATALAYER_NAME: ${process.env.DATALAYER_NAME}`)
+  // console.log(`DATABASE_URL: ${process.env.DATABASE_URL}`)
 }

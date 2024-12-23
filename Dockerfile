@@ -1,8 +1,8 @@
 FROM node:alpine
 
-RUN npm install -g pnpm@8.15.6
-
-RUN pnpm --version
+RUN apk add --no-cache bash postgresql-client && \
+	npm install -g pnpm@8.15.6 && \
+	pnpm --version
 
 WORKDIR /app
 
@@ -30,5 +30,6 @@ CMD ["pnpm", "run", "dev"]
 
 # if I'm using a monorepo please refer to this:
 #docker network create ecommerce_network
-#docker build -t hftamayo/ecommerce_monorepo:0.0.1 .
+#docker network ls
+#docker build --no-cache -t hftamayo/ecommerce_monorepo:0.0.1 .
 #docker run --name ecomonorepo --network ecommerce_network -p 8012:8012 -p 5173:5173 -d --env-file .env hftamayo/ecommerce_monorepo:0.0.1

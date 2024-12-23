@@ -1,6 +1,6 @@
-import { StartBackend } from './besetup.js'
+import { startBackend } from './besetup.js'
 
-StartBackend()
+startBackend()
   .then(() => {
     console.log('Backend started')
   })

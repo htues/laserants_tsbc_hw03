@@ -6,7 +6,7 @@ const dbConnection = async () => {
     await prisma.$connect()
     console.log(`Database connected in ${mode} mode`)
   } catch (error) {
-    console.log('Database connection error: ' + (error as Error).message)
+    console.log('dbConnection method error: ' + (error as Error).message)
     process.exit(1)
   }
 }
@@ -21,10 +21,11 @@ const setCorsEnviro = {
       console.log(`CORS requested from origin: ${origin} granted`)
       callback(null, true)
     } else {
+      console.log(`CORS requested from origin: ${origin} denied`)
       callback(new Error(`CORS requested from origin: ${origin} denied`), false)
     }
   },
-  credentials: true,
+  //credentials: true,
   optionsSuccessStatus: 200,
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
   allowedHeaders: [
@@ -34,15 +35,9 @@ const setCorsEnviro = {
     'Access-Control-Allow-Methods',
     'Access-Control-Allow-Credentials',
     'Origin',
-    'withCredentials',
     'X-Requested-With',
-    'Content-Type',
     'Accept',
     'Authorization',
-    'X-HTTP-Method-Override',
-    'Set-Cookie',
-    'Cookie',
-    'Request',
   ],
 }
 

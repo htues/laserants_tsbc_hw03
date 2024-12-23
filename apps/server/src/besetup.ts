@@ -3,7 +3,7 @@ import express, { Request, Response, NextFunction } from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import { dbConnection, setCorsEnviro } from './config/setup.js'
-import { port, mode } from './config/envvars.js'
+import { port, mode, dataseeddev } from './config/envvars.js'
 
 import healthCheckRouter from './api/routes/hc.js'
 import rolesRouter from './api/routes/roleRoutes.js'
@@ -13,15 +13,17 @@ import categoriesRouter from './api/routes/categoryRoutes.js'
 import productsRouter from './api/routes/productRoutes.js'
 import variantsRouter from './api/routes/variantRoutes.js'
 import collectionsRouter from './api/routes/collectionRoutes.js'
-import seedDatabase from './utils/seedDatabase.js'
+import seedDatabase from './utils/datalayer/seedDatabase.js'
 
 const backend: express.Application = express()
 
 const PORT = port || 5001
 
-async function StartBackend() {
+async function startBackend() {
   try {
+    console.log('stage 1: starting db connection')
     await dbConnection()
+    console.log('stage 1 completed: Database connection established')
     backend.use(cors(setCorsEnviro))
     backend.use(express.json())
     backend.use(express.urlencoded({ extended: true }))
@@ -33,8 +35,13 @@ async function StartBackend() {
       console.log(`Request headers: ${JSON.stringify(req.headers)}`)
       next()
     })
-
-    await seedDatabase()
+    if (mode !== 'production' && dataseeddev === 'true') {
+      console.log('stage 2: Data seeding phase')
+      await seedDatabase()
+      console.log('stage 2 finished: Data seeding completed')
+    } else {
+      console.log('stage 2 finished: Data seeding not required')
+    }
 
     backend.use('/health', healthCheckRouter)
     backend.use('/roles', rolesRouter)
@@ -70,4 +77,4 @@ process.on(
   },
 )
 
-export { backend, StartBackend }
+export { backend, startBackend }

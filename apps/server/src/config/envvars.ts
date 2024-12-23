@@ -21,16 +21,16 @@ const getEnvVar = (key: string, defaultValue: string = ''): string => {
   return value
 }
 
-// Gather environment variables
 const POSTGRES_USER = getEnvVar('POSTGRES_USER')
 const POSTGRES_PASSWORD = getEnvVar('POSTGRES_PASSWORD')
 const POSTGRES_DB = getEnvVar('POSTGRES_DB')
-const POSTGRES_HOST = getEnvVar('POSTGRES_HOST')
+const DATALAYER_NAME = getEnvVar('DATALAYER_NAME')
 const POSTGRES_PORT = getEnvVar('POSTGRES_PORT')
 
-// Manually construct the DATABASE_URL
-const DATABASE_URL = `postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}`
+const DATABASE_URL = `postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${DATALAYER_NAME}:${POSTGRES_PORT}/${POSTGRES_DB}`
 process.env.DATABASE_URL = DATABASE_URL
+
+//console.log(`Constructed DATABASE_URL: ${DATABASE_URL}`)
 
 const port = parseInt(process.env.BACKEND_PORT ?? '8003')
 if (isNaN(port)) {
@@ -43,8 +43,10 @@ const whitelist_frontend = (process.env.FRONTEND_ORIGINS ?? '').split(',')
 const cors_secure = mode === 'production'
 const cors_samesite = mode === 'production' ? 'none' : 'lax'
 
+const databaseUrl = process.env.DATABASE_URL
 const dataseeddev = process.env.SEED_DEVELOPMENT
 const dataseedprod = process.env.SEED_PRODUCTION
+const data_structure = process.env.DATA_STRUCTURE
 
 export {
   port,
@@ -54,4 +56,6 @@ export {
   cors_samesite,
   dataseeddev,
   dataseedprod,
+  data_structure,
+  databaseUrl,
 }

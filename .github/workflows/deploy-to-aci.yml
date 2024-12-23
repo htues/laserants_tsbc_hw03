@@ -11,63 +11,129 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Log in to Docker Hub
       run: echo "${{ secrets.DOCKER_HUB_PAT }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
-
-    - name: Pull Docker images
-      run: |
-        docker pull hftamayo/ecommerce_monorepo:0.0.1
-        docker pull hftamayo/pgecommerce:0.0.1
 
     - name: Set up Azure CLI
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Ensure resource group exists
+    - name: Create Virtual Network if not exists
       run: |
-        if ! az group exists --name laserantsgroup; then
-          az group create --name laserantsgroup --location westus
+        if ! az network vnet show --resource-group laserantsgroup --name laserantsvnet &>/dev/null; then
+          az network vnet create \
+            --resource-group laserantsgroup \
+            --name laserantsvnet \
+            --address-prefix 10.0.0.0/16
         fi
 
-    - name: Ensure virtual network and subnet exist
+    - name: Create Subnet for Application Gateway if not exists
       run: |
-        if ! az network vnet show --resource-group laserantsgroup --name laserantsvnet; then
-          az network vnet create --resource-group laserantsgroup --name laserantsvnet --address-prefix 10.0.0.0/16 --subnet-name lasersubnet --subnet-prefix 10.0.0.0/24
+        if ! az network vnet subnet show --resource-group laserantsgroup --vnet-name laserantsvnet --name appGatewaySubnet &>/dev/null; then
+          az network vnet subnet create \
+            --resource-group laserantsgroup \
+            --vnet-name laserantsvnet \
+            --name appGatewaySubnet \
+            --address-prefix 10.0.1.0/24
         fi
 
-    - name: Ensure network security group exists
+    - name: Create Subnet for Containers if not exists
       run: |
-        if ! az network nsg show --resource-group laserantsgroup --name laserantsnsg; then
-          az network nsg create --resource-group laserantsgroup --name laserantsnsg --location westus
+        if ! az network vnet subnet show --resource-group laserantsgroup --vnet-name laserantsvnet --name containerSubnet &>/dev/null; then
+          az network vnet subnet create \
+            --resource-group laserantsgroup \
+            --vnet-name laserantsvnet \
+            --name containerSubnet \
+            --address-prefix 10.0.2.0/24 \
+            --delegations Microsoft.ContainerInstance/containerGroups
         fi
 
-    - name: Ensure NSG rules allow internal communication
+    - name: Create Public IP for Application Gateway if not exists
       run: |
-        az network nsg rule create --resource-group laserantsgroup --nsg-name laserantsnsg --name AllowInternal --priority 100 --direction Inbound --access Allow --protocol Tcp --source-address-prefixes 10.0.0.0/16 --source-port-ranges '*' --destination-address-prefixes 10.0.0.0/16 --destination-port-ranges '*'
-
-    - name: Associate NSG with subnet
-      run: |
-        az network vnet subnet update --resource-group laserantsgroup --vnet-name laserantsvnet --name lasersubnet --network-security-group laserantsnsg
-
-    - name: Delete existing ecommerce-monorepo container group
-      run: |
-        if az container show --resource-group laserantsgroup --name ecommerce-monorepo; then
-          az container delete --resource-group laserantsgroup --name ecommerce-monorepo --yes
+        if ! az network public-ip show --resource-group laserantsgroup --name appGatewayPublicIp &>/dev/null; then
+          az network public-ip create \
+            --resource-group laserantsgroup \
+            --name appGatewayPublicIp \
+            --sku Standard \
+            --allocation-method Static
         fi
 
-    - name: Delete existing pgecommerce container group
+    - name: Check and delete existing pgecommerce container
       run: |
-        if az container show --resource-group laserantsgroup --name pgecommerce; then
+        if az container show --resource-group laserantsgroup --name pgecommerce &>/dev/null; then
           az container delete --resource-group laserantsgroup --name pgecommerce --yes
+        fi
+
+    - name: Deploy pgecommerce to ACI
+      run: |
+        az container create \
+          --resource-group laserantsgroup \
+          --name pgecommerce \
+          --image hftamayo/pgecommerce:0.0.1 \
+          --cpu 1 \
+          --memory 1 \
+          --ports 5432 \
+          --registry-login-server index.docker.io \
+          --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} \
+          --registry-password ${{ secrets.DOCKER_HUB_PAT }} \
+          --vnet laserantsvnet \
+          --subnet containerSubnet \
+          --ip-address Private \
+          --environment-variables POSTGRES_USER=${{ secrets.POSTGRES_USER }} POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} POSTGRES_DB=${{ secrets.POSTGRES_DB }} POSTGRES_HOST=${{ secrets.POSTGRES_HOST }} POSTGRES_PORT=${{ secrets.POSTGRES_PORT }}
+
+    - name: Get pgecommerce IP address
+      id: get_pgecommerce_ip
+      run: |
+        PGE_COMMERCE_IP=$(az container show --resource-group laserantsgroup --name pgecommerce --query ipAddress.ip --output tsv)
+        echo "PGE_COMMERCE_IP=$PGE_COMMERCE_IP" >> $GITHUB_ENV
+
+    - name: Check and delete existing ecommerce-monorepo container
+      run: |
+        if az container show --resource-group laserantsgroup --name ecommerce-monorepo &>/dev/null; then
+          az container delete --resource-group laserantsgroup --name ecommerce-monorepo --yes
         fi
 
     - name: Deploy ecommerce_monorepo to ACI
       run: |
-        az container create --resource-group laserantsgroup --name ecommerce-monorepo --image hftamayo/ecommerce_monorepo:0.0.1 --cpu 1 --memory 1 --ports 5173 8012 --registry-login-server index.docker.io --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} --registry-password ${{ secrets.DOCKER_HUB_PAT }} --vnet laserantsvnet --subnet lasersubnet --ip-address Private
+        az container create \
+          --resource-group laserantsgroup \
+          --name ecommerce-monorepo \
+          --image hftamayo/ecommerce_monorepo:0.0.1 \
+          --cpu 1 \
+          --memory 1 \
+          --ports 5173 8012 \
+          --registry-login-server index.docker.io \
+          --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} \
+          --registry-password ${{ secrets.DOCKER_HUB_PAT }} \
+          --vnet laserantsvnet \
+          --subnet containerSubnet \
+          --ip-address Private \
+          --environment-variables POSTGRES_HOST=${{ env.PGE_COMMERCE_IP }}
 
-    - name: Deploy pgecommerce to ACI
+    - name: Create Application Gateway if not exists
       run: |
-        az container create --resource-group laserantsgroup --name pgecommerce --image hftamayo/pgecommerce:0.0.1 --cpu 1 --memory 1 --ports 5432 --registry-login-server index.docker.io --registry-username ${{ secrets.DOCKER_HUB_USERNAME }} --registry-password ${{ secrets.DOCKER_HUB_PAT }} --vnet laserantsvnet --subnet lasersubnet --ip-address Private
+        if ! az network application-gateway show --resource-group laserantsgroup --name appGateway &>/dev/null; then
+          az network application-gateway create \
+            --resource-group laserantsgroup \
+            --name appGateway \
+            --location westus \
+            --sku Standard_v2 \
+            --capacity 2 \
+            --vnet-name laserantsvnet \
+            --subnet appGatewaySubnet \
+            --public-ip-address appGatewayPublicIp \
+            --frontend-port 80 \
+            --http-settings-port 5173 \
+            --http-settings-protocol Http \
+            --routing-rule-type Basic \
+            --priority 1 \
+            --servers $(az container show --resource-group laserantsgroup --name ecommerce-monorepo --query ipAddress.ip --output tsv)
+        fi
+
+    - name: Get public IP address of Application Gateway
+      run: |
+        APP_GATEWAY_IP=$(az network public-ip show --resource-group laserantsgroup --name appGatewayPublicIp --query ipAddress --output tsv)
+        echo "ecommerce-monorepo is accessible at http://$APP_GATEWAY_IP"

@@ -1,5 +1,7 @@
 FROM postgres:14-alpine
 
+RUN apk add --no-cache bash
+
 WORKDIR /docker-entrypoint-initdb.d
 
 COPY db.sql .
@@ -11,8 +13,9 @@ CMD ["docker-entrypoint.sh", "postgres"]
 #to run this file:
 #docker build -f Dockerfile.db -t your-image-name .
 #docker run --env-file .env your-image-name
-#docker build -t hftamayo/pgecommerce:0.0.1 .
+#docker build -f Dockerfile.db -t hftamayo/pgecommerce:0.0.1 .
 #docker network create ecommerce_network
 #the bellow commands need to be run on the root of the project
+#pg container NEEDS to read env file of the project
 #docker run --name pgecommerce --network ecommerce_network -p 5432:5432 -d --env-file .env hftamayo/pgecommerce:0.0.1
-#docker run --name pgecommerce -p 5432:5432 -d --env-file .env hftamayo/pgecommerce:0.0.1
+#psql -h $POSTGRES_HOST -U $POSTGRES_USER -d $POSTGRES_DB 
