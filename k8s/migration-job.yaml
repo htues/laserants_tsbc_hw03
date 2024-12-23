@@ -8,7 +8,7 @@ spec:
       containers:
         - name: ecomonorepo-migration
           image: hftamayo/ecommerce_monorepo:0.1.1
-          command: ["sh", "-c", "npx prisma migrate deploy && npx prisma generate"]
+          command: ["sh", "-c", "cd apps/server && npx prisma migrate deploy && npx prisma generate"]
           env:
             - name: DATABASE_URL
               valueFrom:
