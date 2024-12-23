@@ -1,8 +1,8 @@
 FROM node:alpine
 
-RUN apk add --no-cache bash postgresql-client && \
-	npm install -g pnpm@8.15.6 && \
-	pnpm --version
+RUN apk add --no-cache bash openssl postgresql-client && \
+    npm install -g pnpm@8.15.6 && \
+    pnpm --version
 
 WORKDIR /app
 
