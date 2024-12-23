@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ecomonorepo
+spec:
+  selector:
+    app: ecomonorepo
+  ports:
+    - protocol: TCP
+      port: 8012
+      targetPort: 8012
+    - protocol: TCP
+      port: 5173
+      targetPort: 5173
+  type: LoadBalancer
