@@ -1,13 +1,13 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: db-migration-job
+  name: pgecommerce-migration-job
 spec:
   template:
     spec:
       containers:
-        - name: migrate
-          image: hftamayo/ecommerce_monorepo:0.0.1
+        - name: ecomonorepo-migration
+          image: hftamayo/ecommerce_monorepo:0.1.1
           command: ["sh", "-c", "npx prisma migrate deploy && npx prisma generate"]
           env:
             - name: DATABASE_URL
