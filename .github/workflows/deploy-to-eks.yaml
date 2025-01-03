@@ -1,0 +1,70 @@
+name: Deploy to Kubernetes
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the application
+        run: npm run build
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build and push Docker images
+        run: |
+          docker build -t hftamayo/ecommerce_monorepo:0.1.1 .
+          docker push hftamayo/ecommerce_monorepo:0.1.1
+          docker build -t hftamayo/pgecommerce:0.0.1 .
+          docker push hftamayo/pgecommerce:0.0.1
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v1
+        with:
+          version: 'latest'
+
+      - name: Create Kubernetes Secret
+        run: |
+          kubectl create secret generic db-secret \
+            --from-literal=DATABASE_URL=${{ secrets.DATABASE_URL }} \
+            --from-literal=POSTGRES_USER=${{ secrets.POSTGRES_USER }} \
+            --from-literal=POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \
+            --from-literal=POSTGRES_DB=${{ secrets.POSTGRES_DB }} \
+            --from-literal=POSTGRES_HOST=${{ secrets.POSTGRES_HOST }} \
+            --from-literal=POSTGRES_PORT=${{ secrets.POSTGRES_PORT }} \
+            --from-literal=DATALAYER_NAME=${{ secrets.DATALAYER_NAME }} \
+            --from-literal=DATA_STRUCTURE=${{ secrets.DATA_STRUCTURE }} \
+            --from-literal=EXEC_MODE=${{ secrets.EXEC_MODE }} \
+            --from-literal=SEED_DEVELOPMENT=${{ secrets.SEED_DEVELOPMENT }} \
+            --from-literal=SEED_PRODUCTION=${{ secrets.SEED_PRODUCTION }} \
+            --from-literal=FRONTEND_ORIGINS=${{ secrets.FRONTEND_ORIGINS }} \
+            --from-literal=VITE_BACKEND_URL=${{ secrets.VITE_BACKEND_URL }} \
+            --from-literal=VITE_APP_NAME=${{ secrets.VITE_APP_NAME }}
+
+      - name: Deploy to Kubernetes
+        uses: azure/k8s-deploy@v1
+        with:
+          manifests: |
+            ./k8s/pg-deployment.yaml
+            ./k8s/pg-service.yaml
+            ./k8s/codebase-deployment.yaml
+            ./k8s/codebase-service.yaml
+          images: |
+            hftamayo/ecommerce_monorepo:0.1.1
+            hftamayo/pgecommerce:0.0.1

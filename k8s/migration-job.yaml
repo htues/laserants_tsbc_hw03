@@ -1,14 +1,14 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: data-seeding-job
+  name: pgecommerce-migration-job
 spec:
   template:
     spec:
       containers:
-        - name: data-seeder
-          image: hftamayo/ecommerce_monorepo:0.0.1
-          command: ["sh", "-c", "node /app/src/utils/seedDatabase.js"]
+        - name: ecomonorepo-migration
+          image: hftamayo/ecommerce_monorepo:0.1.1
+          command: ["sh", "-c", "cd apps/server && npx prisma migrate deploy && npx prisma generate"]
           env:
             - name: DATABASE_URL
               valueFrom:
