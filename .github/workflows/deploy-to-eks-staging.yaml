@@ -1,9 +1,9 @@
-name: Deploy to Kubernetes
+name: Deploy to AWS EKS (staging)
 
 on:
   push:
     branches:
-      - main
+      - unstable
 
 jobs:
   deploy:
