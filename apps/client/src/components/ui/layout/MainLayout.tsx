@@ -1,5 +1,3 @@
-import { useSelector } from 'react-redux'
-
 import UserHeader from '../header/UserHeader'
 import UserFooter from '../footer/UserFooter'
 import SideBar from '../header/SideBar'
