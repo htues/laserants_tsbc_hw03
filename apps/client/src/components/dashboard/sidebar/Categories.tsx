@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import loadData from '../../../api/loadData'
-import { getCategories, setSelectedCategory} from '../../redux/categorySlice'
+import { getCategories, setSelectedCategory } from '../../redux/categorySlice'
 import { selectCategories } from '../../redux/categorySelector'
 import { FaHome, FaRegFileAlt } from 'react-icons/fa'
 import { dashboardStyles } from '../../ui/twind/styles'
-
 
 function Categories() {
   const [tries, setTries] = useState(0)
@@ -15,14 +14,14 @@ function Categories() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        await loadData(tries, setTries, getCategories, dispatch);
+        await loadData(tries, setTries, getCategories, dispatch)
       } catch (error) {
-        console.error('Failed to fetch categories:', error);
+        console.error('Failed to fetch categories:', error)
       }
-    };
-    fetchCategories();
-  }, [tries, dispatch]);
-  
+    }
+    fetchCategories()
+  }, [tries, dispatch])
+
   const handleCategoryClick = (id: number | null) => {
     dispatch(setSelectedCategory(id))
   }

@@ -1,10 +1,10 @@
-import { mode, dataseeddev, data_structure } from '../../config/envvars.js'
+import { mode, dataseeddev } from '../../config/envvars.js'
 import runMigrations from './runnerMigrations.js'
 import seedRoles from './seeders/seedRoles.js'
 import seedUsers from './seeders/seedUsers.js'
 import seedCategories from './seeders/seedCategories.js'
 import seedProducts from './seeders/seedProducts.js'
-import { isTableExists, clearDatabase, dbDisconnect } from './dbUtils.js'
+import { isTableExists, dbDisconnect } from './dbUtils.js'
 
 async function seedDatabase() {
   try {
